@@ -87,9 +87,10 @@ if(!isset($_SESSION['LoggedInUserId']))
 
 <div class="flipbook-viewport">
 	<div class="container">
-		<div class="flipbook">
+		<div class="flipbook" id="books">
 		
-		<?php
+    <?php
+    echo "<input type='hidden' id='hiddenUserId' value='".$_SESSION['LoggedInUserId']."'/>";
                 //fetch cover images from database  
                 while ($row = mysqli_fetch_array($result)){
                     
@@ -102,7 +103,7 @@ if(!isset($_SESSION['LoggedInUserId']))
     echo"<font color='#003333'><h1>".$row['title']."</h1></font>"; 
     echo"<font color='#862d2d'><h3>".$row['author']."</h3></font>";
     echo"<br><h3>IN</h3><font color=' #5c5c3d'><h3>".$row['language']."</h3></font>";
-    echo"<button type='submit' name='regbtn'>Order Book</button>";
+    echo"<button type='button' name='regbtn' class='js-order' data-book-id='".$row['book_id']."'>Order Book</button>";
     echo "</div>";
                     
 	echo "<div class='preview'> <h1>Page <br>Preview</h1></div>";
@@ -113,6 +114,7 @@ if(!isset($_SESSION['LoggedInUserId']))
     echo "<div style='background-image:url(../images/Book/view/covers2.jpg)'></div>";
     echo "<div style='background-image:url(../images/Book/view/endpage.jpg)'></div>";
                 }
+
         ?>
         
 		</div>
@@ -174,240 +176,267 @@ yepnope({
   <script>
     var scroll = new SmoothScroll('a[href*="#"]');
     $(document).ready(function() {
-      let doctors = [];
-      let specializedDoctors = [];
-      const weekDayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const patientId = $("#hiddenPatientId").val();
 
-      bindDoctorsList();
-
-
-      $("#cmbSpeciality").on("change", function() {
-        specializedDoctors = [];
-        $("#cmbDoctor").empty();
-        $("#cmbDoctor").append(
-          $("<option></option>").val("").html("Select a doctor")
-        );
-
-        let speciality = $(this).val();
-
-        if (doctors.length < 1 || !speciality) return;
-
-        specializedDoctors = doctors.filter(function(doctor) {
-          return doctor.speciality == speciality
-        });
-
-        $.each(specializedDoctors, function(index, item) {
-          $("#cmbDoctor").append(
-            $("<option></option>").val(item.doctor_id).html(item.doctor_name));
-        });
-
+      $("#books").on("click", ".js-order").click(function(){
+        let bookId = parseInt($(this).attr("data-book-id"));
+        
+        orderBook(bookId);
       });
 
-      $("#cmbDoctor").on("change", function() {
-        let doctor_id = $(this).val();
-
-        $("#cmbDay").empty();
-        $("#cmbDay").append(
-          $("<option></option>").val("").html("Select a doctor available day")
-        );
-
-        if (specializedDoctors.length < 1 || !doctor_id) return;
-
-        let doctorAvailableDays = specializedDoctors.filter(function(doctor) {
-          return doctor.doctor_id == doctor_id
-        })[0].available_days.split(',');
-
-        $.each(doctorAvailableDays, function(index, item) {
-          $("#cmbDay").append(
-            $("<option></option>").val(item).html(item)
-          );
-        });
-      });
-
-      $("#cmbDay").on("change", function() {
-        $("#txtAppointmentDate").val("");
-        let indexOfSelectedDate = weekDayNames.indexOf($(this).val());
-        let indexOfCurrentDate = new Date().getDay();
-
-        let appointmentDate = new Date();
-
-        appointmentDate.setDate(appointmentDate.getDate() + (indexOfSelectedDate + (7 - indexOfCurrentDate)) % 7);
-        $("#txtAppointmentDate").val(appointmentDate.toLocaleDateString());
-
-      });
-
-      $("#btnSave").click(function() {
-        let patient_name = $("#txtName").val();
-        let age = $("#txtAge").val();
-        let phone_no = $("#txtPhone").val();
-        let appointment_date = $("#txtAppointmentDate").val();
-        let doctor_id = $("#cmbDoctor").val();
-
-        if (!patient_name) {
-          toastr.error("Patient name field is required.");
-          return;
-        }
-        if (!age) {
-          toastr.error("Age field is required.");
-          return;
-        }
-        if (!phone_no) {
-          toastr.error("Phone no field is required.");
-          return;
-        }
-        if (!$("#cmbSpeciality").val()) {
-          toastr.error("Please select a speciality.");
-          return;
-        }
-        if (!$("#cmbDoctor").val()) {
-          toastr.error("Please select a doctor.");
-          return;
-        }
-        if (!$("#cmbDay").val()) {
-          toastr.error("Please select a doctor available day.");
-          return;
-        }
-        if (!appointment_date) {
-          toastr.error("Appointment date field is required.");
-          return;
-        }
-
-        let appointment = {
-          patient_name,
-          age,
-          phone_no,
-          appointment_date,
-          doctor_id,
-          patient_id: patientId
-        };
+      function orderBook(bookId){
+       let vm = {
+         book_id,
+         user_id : parseInt($("#hiddenUserId").val())
+       };
 
         $.ajax({
-          url: "/Medilife/api/appointments/create.php",
+          url: "/LMS/api/orders/order.php",
           method: "POST",
           data: JSON.stringify(appointment),
           ContentType: "application/json",
           success: function(result) {
-            //console.log(result);
-            Swal.fire({
-              title: 'Appointment Created.',
-              html: `Your token is ${result}!`,
-              type: 'success',
-              onClose: () => {
-                location.reload(true);
-              }
-            });
-            //alert(`Your token is ${result}`);
-            $("#txtTokenNo").val(result);
+            
           },
           error: function(jqXHR, textStatus, errorThrown) {
             //console.log(jqXHR.responseText);
           }
         });
-
-      });
-
-      $("#btnCancel").click(function() {
-        const swalWithBootstrapButtons = Swal.mixin({
-          customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger'
-          },
-          buttonsStyling: false
-        })
-
-        swalWithBootstrapButtons.fire({
-          title: 'Are you sure?',
-          text: "Your appointment will be cancelled.",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, cancel appointment!',
-          cancelButtonText: 'No, keep appointment!',
-          reverseButtons: true
-        }).then((result) => {
-          if (result.value) {
-            cancelAppointment();
-          } else {
-
-          }
-        });
-
-        function cancelAppointment() {
-          let appointment = {
-            appointment_id: $("#hiddenAppointmentId").val()
-          };
-
-          $.ajax({
-            url: "/Medilife/api/appointments/cancel_appointment.php",
-            method: "DELETE",
-            data: JSON.stringify(appointment),
-            ContentType: "application/json",
-            success: function(result) {
-              Swal.fire({
-                title: 'Cancelled.',
-                html: 'Appointment has been cancelled.',
-                type: 'success',
-                onClose: () => {
-                  location.reload(true);
-                }
-              });
-              // alert("Appointment cancelled.");
-              // location.reload(true);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              // console.log(jqXHR.responseText);
-            }
-          });
-        }
-      });
-
-      function bindDoctorsList() {
-        $.ajax({
-          url: "/Medilife/api/doctors/read.php",
-          method: "GET",
-          success: function(result) {
-            doctors = result;
-            bindControls();
-            //  console.log(doctors);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.responseText);
-          }
-        });
       }
 
-      function bindControls() {
-        $.ajax({
-          url: `/Medilife/api/appointments/read_single.php?id=${patientId}`,
-          method: "GET",
-          success: function(result) {
-            if (result.appointment_id) {
-              $("#hiddenAppointmentId").val(result.appointment_id);
-              $("#txtName").val(result.patient_name);
-              $("#txtAge").val(result.age);
-              $("#txtPhone").val(result.phone_no);
-              $("#txtTokenNo").val(result.token_no);
-              $("#txtAppointmentDate").val(result.appointment_date);
-              $("#btnSave").attr("disabled", true);
-              $("#dvCancel").attr("visibility", 'visible');
-              $("#dvCancel").show();
+      // let doctors = [];
+      // let specializedDoctors = [];
+      // const weekDayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      // const patientId = $("#hiddenPatientId").val();
 
-              let doctor = doctors.filter(function(doc) {
-                return doc.doctor_id == result.doctor_id
-              })[0];
+      // bindDoctorsList();
 
-              $("#cmbSpeciality").val(doctor.speciality).change();
-              $("#cmbDoctor").val(result.doctor_id).change();
-              $("#cmbDay").val(weekDayNames[new Date(result.appointment_date).getDay()]).change();
-            } else {
-              $("#dvCancel").hide();
-            }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR.responseText);
-          }
-        });
-      }
+
+      // $("#cmbSpeciality").on("change", function() {
+      //   specializedDoctors = [];
+      //   $("#cmbDoctor").empty();
+      //   $("#cmbDoctor").append(
+      //     $("<option></option>").val("").html("Select a doctor")
+      //   );
+
+      //   let speciality = $(this).val();
+
+      //   if (doctors.length < 1 || !speciality) return;
+
+      //   specializedDoctors = doctors.filter(function(doctor) {
+      //     return doctor.speciality == speciality
+      //   });
+
+      //   $.each(specializedDoctors, function(index, item) {
+      //     $("#cmbDoctor").append(
+      //       $("<option></option>").val(item.doctor_id).html(item.doctor_name));
+      //   });
+
+      // });
+
+      // $("#cmbDoctor").on("change", function() {
+      //   let doctor_id = $(this).val();
+
+      //   $("#cmbDay").empty();
+      //   $("#cmbDay").append(
+      //     $("<option></option>").val("").html("Select a doctor available day")
+      //   );
+
+      //   if (specializedDoctors.length < 1 || !doctor_id) return;
+
+      //   let doctorAvailableDays = specializedDoctors.filter(function(doctor) {
+      //     return doctor.doctor_id == doctor_id
+      //   })[0].available_days.split(',');
+
+      //   $.each(doctorAvailableDays, function(index, item) {
+      //     $("#cmbDay").append(
+      //       $("<option></option>").val(item).html(item)
+      //     );
+      //   });
+      // });
+
+      // $("#cmbDay").on("change", function() {
+      //   $("#txtAppointmentDate").val("");
+      //   let indexOfSelectedDate = weekDayNames.indexOf($(this).val());
+      //   let indexOfCurrentDate = new Date().getDay();
+
+      //   let appointmentDate = new Date();
+
+      //   appointmentDate.setDate(appointmentDate.getDate() + (indexOfSelectedDate + (7 - indexOfCurrentDate)) % 7);
+      //   $("#txtAppointmentDate").val(appointmentDate.toLocaleDateString());
+
+      // });
+
+      // $("#btnSave").click(function() {
+      //   let patient_name = $("#txtName").val();
+      //   let age = $("#txtAge").val();
+      //   let phone_no = $("#txtPhone").val();
+      //   let appointment_date = $("#txtAppointmentDate").val();
+      //   let doctor_id = $("#cmbDoctor").val();
+
+      //   if (!patient_name) {
+      //     toastr.error("Patient name field is required.");
+      //     return;
+      //   }
+      //   if (!age) {
+      //     toastr.error("Age field is required.");
+      //     return;
+      //   }
+      //   if (!phone_no) {
+      //     toastr.error("Phone no field is required.");
+      //     return;
+      //   }
+      //   if (!$("#cmbSpeciality").val()) {
+      //     toastr.error("Please select a speciality.");
+      //     return;
+      //   }
+      //   if (!$("#cmbDoctor").val()) {
+      //     toastr.error("Please select a doctor.");
+      //     return;
+      //   }
+      //   if (!$("#cmbDay").val()) {
+      //     toastr.error("Please select a doctor available day.");
+      //     return;
+      //   }
+      //   if (!appointment_date) {
+      //     toastr.error("Appointment date field is required.");
+      //     return;
+      //   }
+
+      //   let appointment = {
+      //     patient_name,
+      //     age,
+      //     phone_no,
+      //     appointment_date,
+      //     doctor_id,
+      //     patient_id: patientId
+      //   };
+
+      //   $.ajax({
+      //     url: "/Medilife/api/appointments/create.php",
+      //     method: "POST",
+      //     data: JSON.stringify(appointment),
+      //     ContentType: "application/json",
+      //     success: function(result) {
+      //       //console.log(result);
+      //       Swal.fire({
+      //         title: 'Appointment Created.',
+      //         html: `Your token is ${result}!`,
+      //         type: 'success',
+      //         onClose: () => {
+      //           location.reload(true);
+      //         }
+      //       });
+      //       //alert(`Your token is ${result}`);
+      //       $("#txtTokenNo").val(result);
+      //     },
+      //     error: function(jqXHR, textStatus, errorThrown) {
+      //       //console.log(jqXHR.responseText);
+      //     }
+      //   });
+
+      // });
+
+      // $("#btnCancel").click(function() {
+      //   const swalWithBootstrapButtons = Swal.mixin({
+      //     customClass: {
+      //       confirmButton: 'btn btn-success',
+      //       cancelButton: 'btn btn-danger'
+      //     },
+      //     buttonsStyling: false
+      //   })
+
+      //   swalWithBootstrapButtons.fire({
+      //     title: 'Are you sure?',
+      //     text: "Your appointment will be cancelled.",
+      //     type: 'warning',
+      //     showCancelButton: true,
+      //     confirmButtonText: 'Yes, cancel appointment!',
+      //     cancelButtonText: 'No, keep appointment!',
+      //     reverseButtons: true
+      //   }).then((result) => {
+      //     if (result.value) {
+      //       cancelAppointment();
+      //     } else {
+
+      //     }
+      //   });
+
+      //   function cancelAppointment() {
+      //     let appointment = {
+      //       appointment_id: $("#hiddenAppointmentId").val()
+      //     };
+
+      //     $.ajax({
+      //       url: "/Medilife/api/appointments/cancel_appointment.php",
+      //       method: "DELETE",
+      //       data: JSON.stringify(appointment),
+      //       ContentType: "application/json",
+      //       success: function(result) {
+      //         Swal.fire({
+      //           title: 'Cancelled.',
+      //           html: 'Appointment has been cancelled.',
+      //           type: 'success',
+      //           onClose: () => {
+      //             location.reload(true);
+      //           }
+      //         });
+      //         // alert("Appointment cancelled.");
+      //         // location.reload(true);
+      //       },
+      //       error: function(jqXHR, textStatus, errorThrown) {
+      //         // console.log(jqXHR.responseText);
+      //       }
+      //     });
+      //   }
+      // });
+
+      // function bindDoctorsList() {
+      //   $.ajax({
+      //     url: "/Medilife/api/doctors/read.php",
+      //     method: "GET",
+      //     success: function(result) {
+      //       doctors = result;
+      //       bindControls();
+      //       //  console.log(doctors);
+      //     },
+      //     error: function(jqXHR, textStatus, errorThrown) {
+      //       console.log(jqXHR.responseText);
+      //     }
+      //   });
+      // }
+
+      // function bindControls() {
+      //   $.ajax({
+      //     url: `/Medilife/api/appointments/read_single.php?id=${patientId}`,
+      //     method: "GET",
+      //     success: function(result) {
+      //       if (result.appointment_id) {
+      //         $("#hiddenAppointmentId").val(result.appointment_id);
+      //         $("#txtName").val(result.patient_name);
+      //         $("#txtAge").val(result.age);
+      //         $("#txtPhone").val(result.phone_no);
+      //         $("#txtTokenNo").val(result.token_no);
+      //         $("#txtAppointmentDate").val(result.appointment_date);
+      //         $("#btnSave").attr("disabled", true);
+      //         $("#dvCancel").attr("visibility", 'visible');
+      //         $("#dvCancel").show();
+
+      //         let doctor = doctors.filter(function(doc) {
+      //           return doc.doctor_id == result.doctor_id
+      //         })[0];
+
+      //         $("#cmbSpeciality").val(doctor.speciality).change();
+      //         $("#cmbDoctor").val(result.doctor_id).change();
+      //         $("#cmbDay").val(weekDayNames[new Date(result.appointment_date).getDay()]).change();
+      //       } else {
+      //         $("#dvCancel").hide();
+      //       }
+      //     },
+      //     error: function(jqXHR, textStatus, errorThrown) {
+      //       console.log(jqXHR.responseText);
+      //     }
+      //   });
+      // }
 
     });
   </script>
