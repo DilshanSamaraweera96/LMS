@@ -185,14 +185,14 @@ yepnope({
 
       function orderBook(bookId){
        let vm = {
-         book_id,
+         book_id : bookId,
          user_id : parseInt($("#hiddenUserId").val())
        };
 
         $.ajax({
           url: "/LMS/api/orders/order.php",
           method: "POST",
-          data: JSON.stringify(appointment),
+          data: JSON.stringify(vm),
           ContentType: "application/json",
           success: function(result) {
             
