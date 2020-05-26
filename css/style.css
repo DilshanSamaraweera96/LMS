@@ -654,7 +654,7 @@
     color: var(--p-color);
     font-size: var(--p-font-size);
     font-weight: var(--font-weight-bold);
-    margin: 5px 10px;
+    margin: 2px 5px;
     text-align: center;
   }
 
@@ -662,6 +662,19 @@
     color: var(--primary-color);
   }
 
+#dropdown1 {
+    
+    margin-top: -6px;
+}
+
+#dropdown1 .badge{
+    
+  position: absolute;
+  font-size: 0.7em;
+  top: 1px;
+  color: red;
+  right: 6px;
+}
 
   /*---------------------------------------
      RESPONSIVE STYLES              

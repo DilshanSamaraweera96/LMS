@@ -90,7 +90,7 @@ if(!isset($_SESSION['LoggedInUserId']))
 		<div class="flipbook" id="books">
 		
     <?php
-    echo "<input type='hidden' id='hiddenUserId' value='".$_SESSION['LoggedInUserId']."'/>";
+
                 //fetch cover images from database  
                 while ($row = mysqli_fetch_array($result)){
                     
@@ -103,7 +103,7 @@ if(!isset($_SESSION['LoggedInUserId']))
     echo"<font color='#003333'><h1>".$row['title']."</h1></font>"; 
     echo"<font color='#862d2d'><h3>".$row['author']."</h3></font>";
     echo"<br><h3>IN</h3><font color=' #5c5c3d'><h3>".$row['language']."</h3></font>";
-    echo"<button type='button' name='regbtn' class='js-order' data-book-id='".$row['book_id']."'>Order Book</button>";
+    echo"<button name='regbtn' class='js-order' data-book-id='".$row['book_id']."'>Reserve Book</button>";
     echo "</div>";
                     
 	echo "<div class='preview'> <h1>Page <br>Preview</h1></div>";
@@ -114,13 +114,14 @@ if(!isset($_SESSION['LoggedInUserId']))
     echo "<div style='background-image:url(../images/Book/view/covers2.jpg)'></div>";
     echo "<div style='background-image:url(../images/Book/view/endpage.jpg)'></div>";
                 }
+                echo "";
 
         ?>
-        
+      
 		</div>
 	</div>
-
 </div>
+<input type='hidden' id='hiddenUserId' value='<?php echo $_SESSION['LoggedInUserId']; ?>'/> 
 </section>
      <!-- SCRIPTS -->
      <script src="../js/jquery.min.js"></script>
@@ -174,10 +175,12 @@ yepnope({
 
 
   <script>
-    var scroll = new SmoothScroll('a[href*="#"]');
+    
     $(document).ready(function() {
 
-      $("#books").on("click", ".js-order").click(function(){
+      // var scroll = new SmoothScroll('a[href*="#"]');
+
+      $("#books").on("click", ".js-order", function(){
         let bookId = parseInt($(this).attr("data-book-id"));
         
         orderBook(bookId);

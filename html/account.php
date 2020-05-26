@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['LoggedInUserId']))
-{
-  header("location:../index.php?status=loggedout");
-}
 ?>
 
 
