@@ -1,3 +1,46 @@
+<?php
+
+
+$mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
+
+$bid ='';
+$title = '';
+$author = '';
+$quan= '';
+
+
+//EDIT SECTION
+
+if( isset($_GET['edit']))
+{
+
+   $bookid = $_GET['edit'];
+   
+   $edit = "SELECT * FROM addbook WHERE book_id='$bookid'";
+
+   $result = $mysqli->query($edit);
+
+   if($result == true)
+   {
+    $row = mysqli_fetch_array($result);
+
+
+      $bid = $row['book_id'];
+      $title = $row['title'];
+      $author = $row['author'];
+      $quan = $row['quantity'];
+
+   }
+   else
+   {
+
+   }
+
+}
+?>     
+<!------Adding collect.php------->
+<?php require_once 'update.php'; ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +57,7 @@
   <link rel="stylesheet" type="text/css" href="../css/zabuto_calendar.css">
   <link rel="stylesheet" type="text/css" href="../lib/gritter/css/jquery.gritter.css" />
   <!-- Custom styles for this template -->
-  <link href="../css/addbooks.css" rel="stylesheet">
+  <link href="../css/updatebooks.css" rel="stylesheet">
   <link href="../css/style-responsive.css" rel="stylesheet">
   <script src="../lib/chart-master/Chart.js"></script>
 
@@ -125,17 +168,41 @@
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
+      
+      <!----------Show ALert Message------------>
+              <section id="lms">         
+                 <div class="container"> 
+
+                 <?php
+                 if (isset($_SESSION['message']))
+                 { 
+                 echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
+                  <center>';?>  <?php echo ($_SESSION['message']) ;?>
+                  <?php unset ($_SESSION['message']); ?> <?php echo '</center></div>';
+
+                 }?>
+                
+              
+                 </div>
+                </section>
+
+      <!---------ALert-------------->
+      
+      
         <div class="container">
 			<div class="main">
 				<div class="main-center">
-				<h5>Add Books</h5>
-					<form method="post" action="addbook.php" enctype="multipart/form-data">
+				<h5>Update Books</h5>
+          <form method="post" action="update.php" enctype="multipart/form-data">
+          
+				<input type="hidden" class="form-control" name="id" value="<?php echo $bid; ?>"/>
+						
 						
 						<div class="form-group">
 							<label>Book Title</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-bookmark" aria-hidden="true"></i></span>
-				<input type="text" class="form-control" name="title" placeholder="Enter Book Name" required/>
+				<input type="text" class="form-control" name="title" value="<?php echo $title; ?>" placeholder="Enter Book Name" required/>
 							</div>
 						</div>
 
@@ -143,7 +210,7 @@
 							<label>Book Author</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="author" placeholder="Enter Author Name" required/>
+									<input type="text" class="form-control" value="<?php echo $author; ?>" name="author" placeholder="Enter Author Name" required/>
 							</div>
 						</div>
 
@@ -174,7 +241,7 @@
 							<label>Book Quantity</label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-book" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="quantity" placeholder="Enter Book Quantity" required/>
+									<input type="number" class="form-control" value="<?php echo $quan; ?>" name="quantity" placeholder="Enter Book Quantity" required/>
 								</div>
 						</div>
 
@@ -220,11 +287,12 @@
 						
 						
 
-				<button type="submit" name="uploadbtn">Submit</button>
+				<button type="submit" name="update">Update</button>
                     
-                    
+     
 						
-					</form>
+          </form>
+          
 				</div><!--main-center"-->
 			</div><!--main-->
 		</div><!--container-->

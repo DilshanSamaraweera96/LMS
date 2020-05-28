@@ -750,53 +750,11 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 .sidebar-closed #sidebar {
     margin-left: -180px;
 }
-/******content*****/
 
-#main-content
-{
-   min-height: 92vh;
-}
-
-#main-content h1
-{
-    color: whitesmoke;
-    text-align: center;
-    font-size:50px;
-}
-
-#main-content h1::after
-{
-    content: '';
-    background: #4ECDC4;
-    display: block;
-    height: 4px;
-    width: 300px;
-    margin: 10px auto 5px;
-    
-}
-
-#main-content h3
-{
-  color: #4ECDC4;
-    font-size:40px;
-    letter-spacing: 2px;
-    margin-bottom: 50px;
-    margin-top: 50px;
-    font-weight: bold;
-}
-
-#main-content p
-{
-   color: whitesmoke;
-    font-size:20px;
-    letter-spacing: 2px;
-    padding-bottom: 10px;
-    
-}
 
 /*------Contact-----*/
 
-#Inbox
+#lms
 {
     background: #FFFFF7;
     background-size: cover;
@@ -805,23 +763,32 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     color: #777;
     min-height: 92vh;
 }
-#Inbox h1
+
+
+#lms .container .alert
+{
+    margin-top: 40px;
+    padding: 20px;
+    font-size: 17px;
+    font-weight: bold;
+}
+#lms h3
 {
     text-align: center;
     color: #555;
-    padding-bottom: 40px;
-    margin-top: 50px;
+    padding-bottom: 20px;
+    margin-top: 70px;
     
 }
-#Inbox h6
+#lms h6
 {
     color: #555;
-    font-size: 17px;
+    font-size: 15px;
     letter-spacing: 2px;
     font-weight: bold;
     margin-left:80px;
 }
-#Inbox h1::after
+#lms h3::after
 {
     content: '';
     background: #007bff;
@@ -834,22 +801,31 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 
 /*** table ****/
 
-.table{
+.table-responsive{
     
-    margin-left:80px;
+   margin-left: 60px;
+   padding-top: 40px;
 }
-.table thead
+.table thead td
 {
-    font-size: 20px;
     color: darkslateblue;
+    font-weight: 600;
+    background: #ffdd99;
     
 }
 
 .table td
 {
-    font-size: 17px;
     color: #555;
+    font-weight: 600;
+    font-size: 14px;
+    
 }
+
+.table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #d9f2e5;
+ }
 
 
 

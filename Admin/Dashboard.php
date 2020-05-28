@@ -1,3 +1,8 @@
+<?php  
+ // Instantiate DB & connect
+ $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -20,6 +25,7 @@
   <link href="css/dashboard.css" rel="stylesheet">
   <link href="css/style-responsive.css" rel="stylesheet">
   <script src="lib/chart-master/Chart.js"></script>
+  <script src="lib/jquery/jquery.min.js"></script>
 
 </head>
 
@@ -33,7 +39,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="Dashboard.html" class="logo"><b>Sip<span>Sewana</span></b></a>
+      <a href="Dashboard.php" class="logo"><b>Sip<span>Sewana</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -64,7 +70,7 @@
           <p class="centered"><img src="Images/logo.png" class="img-circle" width="80"></p>
           <h5 class="centered">Welcome</h5>
           <li class="mt">
-            <a class="sub-menu" href="Dashboard.html">
+            <a class="sub-menu" href="Dashboard.php">
               <i class="fa fa-dashboard"></i>
               <span>Dashboard</span>
               </a>
@@ -76,24 +82,32 @@
               </a>
             <ul class="sub">
               <li><a href="Html/addbooks.html">Add books</a></li>
-              <li><a href="Html/updatebooks.html">Update books</a></li>
-              <li><a href="Html/addbooks.html">All books</a></li>
+              <li><a href="Html/updatebooks.php">Update books</a></li>
+              <li><a href="Html/allbooks.php">All books</a></li>
             </ul>
           </li>
+          
           <li class="sub-menu">
-            <a href="Html/issuebooks.html">
+            <a href="Html/pending.php">
+              <i class="fa fa-archive"></i>
+              <span>Pending Reservations</span>
+              </a>
+          </li>
+          
+          <li class="sub-menu">
+            <a href="Html/issuebooks.php">
               <i class="fa fa-bookmark"></i>
               <span>Issue books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="Html/returnbooks.html">
+            <a href="Html/returnbooks.php">
               <i class="fa fa-address-book"></i>
               <span>Return books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="Html/fine.html">
+            <a href="Html/fine.php">
               <i class="fa fa-info-circle"></i>
               <span>Fine Details</span>
               </a>
@@ -105,7 +119,7 @@
               </a>
           </li>
           <li>
-            <a href="Html/contact.html">
+            <a href="Html/contact.php">
               <i class="fa fa-envelope"></i>
               <span>Contact </span>
               <span class="label label-theme pull-right mail-info"></span>
@@ -124,10 +138,102 @@
     <section id="main-content">
       <section class="wrapper">
         <div class="row">
-           <h1><b>WELCOME<font color="#4ECDC40"> ADMIN</font></b></h1>
-          </div>
+            <h1><b><font color="#bf4040">WELCOME </font><font color="#ac7339"> ADMIN</font></b></h1>
+          </div> 
+         
+    <div id="projectFacts" class="sectionClass">
+    
+    <h2><b><font color="#5c5c3d">Summary</font></b></h2>
+    
+    <div class="fullWidth">
+        <div class="projectFactsWrap ">
+
+        <!-- Get Total Books -->
+    
+    <?php
+
+    $sumb = "SELECT SUM(quantity) AS sum FROM addbook";
+
+    $sumresult = mysqli_query($mysqli,$sumb);
+
+    $sumcheck = mysqli_fetch_array($sumresult);
+
+    $totalbooks = $sumcheck['sum'];
+ 
+    ?>
+            <div class="item">
+                <img src="Images/gif/books.gif">
+                <p class="number"><?php echo "$totalbooks"; ?></p>
+                <span></span>
+                <p>Total Books</p>
+            </div>
+
+        <!-- Get Issue book Count -->
+
+                      <?php
+
+                      $ist = "SELECT COUNT(issuedate) AS isdate FROM issuebook WHERE returndate IS NULL AND issuedate IS NOT NULl";
+
+                      $isresult = mysqli_query($mysqli,$ist);
+
+                      $ischeck = mysqli_fetch_array($isresult);
+
+                      $totalisdate = $ischeck['isdate'];
+
+                      ?>
+            <div class="item">
+                <img src="Images/gif/isue.gif">
+                <p class="number"><?php echo "$totalisdate"; ?></p>
+                <span></span>
+                <p>Issue Books</p>
+            </div>
+        
+        <!-- Return books count -->
+
+                  <?php
+
+                  $ret = "SELECT COUNT(returndate) AS redate FROM issuebook WHERE completedate IS NULL";
+
+                  $result = mysqli_query($mysqli,$ret);
+
+                  $recheck = mysqli_fetch_array($result);
+
+                  $totalredate = $recheck['redate'];
+
+                  ?>
+            <div class="item">
+                <img src="Images/gif/return.gif">
+                <p class="number"><?php echo "$totalredate"; ?></p>
+                <span></span>
+                <p>Return Books</p>
+            </div>
+
+        <!-- Get Members Count-->
+
+                <?php
+
+                $mem = "SELECT COUNT(`mem-id`) AS memcount FROM user_register";
+
+                $memresult = mysqli_query($mysqli,$mem);
+
+                $memcheck = mysqli_fetch_array($memresult);
+
+                $totalmem = $memcheck['memcount'];
+            
+                ?>
+
+            <div class="item">
+                <img src="Images/gif/user.gif">
+                <p class="number"><?php echo "$totalmem"; ?></p>
+                <span></span>
+                <p>Total Members</p>
+            </div>
+        </div>
+    </div>
+</div> 
+         
           <h3>Let's Get Started..!</h3>
-          
+          <div class="sentence">
              <p>1.You can check Available books.<br></p>
              <p>2.You can Add new books & remove books if you want.<br></p>
              <p>3.You can accept or reject member's book orders.<br></p>
@@ -136,17 +242,14 @@
              <p>6.You can check member details and remove.<br></p>
              <p>7.You can check user's messages<br></p>
           
-          
+          </div>
           
           
           
       </section>
     </section>
     <!--main content end-->
-
-      
        
-        
          
            <!--footer start-->
     <footer class="footer">
@@ -195,6 +298,7 @@
       return false;
     });
   </script>
+  <script src="counter.js"></script>
 
 </body>
 

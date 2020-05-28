@@ -1,3 +1,37 @@
+<?php  
+ // Instantiate DB & connect
+ $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
+
+ $query = "SELECT
+ i.memberid,
+ u.fullname,
+ i.bookid,
+ b.title,
+ i.returndate,
+ i.completedate
+ 
+ FROM
+ issuebook i
+ INNER JOIN
+ user_register u ON i.memberid = u.`mem-id`
+ INNER JOIN
+ addbook b ON i.bookid = b.book_id 
+ WHERE i.returndate IS NOT NULL
+ ORDER BY i.issueid DESC";
+ 
+$book = mysqli_query($mysqli, $query); 
+
+$right = $mysqli->query($query);
+
+$num_rows= mysqli_num_rows($book);
+
+ ?>
+
+<!------Adding return.php------->
+<?php require_once 'return.php'; ?>
+
+
+
 <!DOCTYPE html>
 <html>
 
@@ -14,10 +48,14 @@
   <link rel="stylesheet" type="text/css" href="../css/zabuto_calendar.css">
   <link rel="stylesheet" type="text/css" href="../lib/gritter/css/jquery.gritter.css" />
   <!-- Custom styles for this template -->
-  <link href="../css/fine.css" rel="stylesheet">
+  <link href="../css/issuebooks.css" rel="stylesheet">
   <link href="../css/style-responsive.css" rel="stylesheet">
   <script src="../lib/chart-master/Chart.js"></script>
-
+  <!------Data Tables--------------->
+  <script src="../lib/jquery/jquery.min.js"></script>
+  <script src="../../js/jquery.dataTables.min.js"></script>
+  <script src="../../js/dataTables.bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../css/dataTables.bootstrap.min.css">
 </head>
 
 <body>
@@ -30,7 +68,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="Dashboard.html" class="logo"><b>Sip<span>Sewana</span></b></a>
+      <a href="../Dashboard.php" class="logo"><b>Sip<span>Sewana</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -61,7 +99,7 @@
           <p class="centered"><img src="../Images/logo.png" class="img-circle" width="80"></p>
           <h5 class="centered">Welcome</h5>
           <li class="mt">
-            <a class="sub-menu" href="../Dashboard.html">
+            <a class="sub-menu" href="../Dashboard.php">
               <i class="fa fa-dashboard"></i>
               <span>Dashboard</span>
               </a>
@@ -73,36 +111,44 @@
               </a>
             <ul class="sub">
               <li><a href="addbooks.html">Add books</a></li>
-              <li><a href="updatebooks.html">Update books</a></li>
-              <li><a href="allbooks.html">All books</a></li>
+              <li><a href="updatebooks.php">Update books</a></li>
+              <li><a href="allbooks.php">All books</a></li>
             </ul>
           </li>
+          
+         <li class="sub-menu">
+            <a href="pending.php">
+            <i class="fa fa-archive"></i>
+            <span>Pending Reservations</span>
+            </a>
+          </li>
+          
           <li class="sub-menu">
-            <a href="issuebooks.html">
+            <a href="issuebooks.php">
               <i class="fa fa-bookmark"></i>
               <span>Issue books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="returnbooks.html">
+            <a href="returnbooks.php">
               <i class="fa fa-address-book"></i>
               <span>Return books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="fine.html">
+            <a href="fine.php">
               <i class="fa fa-info-circle"></i>
               <span>Fine Details</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="member.html">
+            <a href="member.php">
               <i class="fa fa-th"></i>
               <span>Member Details</span>
               </a>
           </li>
           <li>
-            <a href="contact.html">
+            <a href="contact.php">
               <i class="fa fa-envelope"></i>
               <span>Contact </span>
               <span class="label label-theme pull-right mail-info"></span>
@@ -117,15 +163,76 @@
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
-    <!--main content start-->
-             <p>1.You can check Available Doctors.<br></p>
-             <p>2.You can Add new doctors & remove doctors if you want.<br></p>
-             <p>3.You can add manually patient appoinments.<br></p>
-             <p>4.You can remove appoinments.<br></p>
-             <p>5.You can check user's messages & remove them.<br></p>
-    <!--main content end-->
+        
+        <section id="lms">
 
-      
+                              
+                 <div class="container">  
+
+              <!----------Show ALert Message------------>
+              <?php
+              if (isset($_SESSION['message']))
+              { 
+              echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
+                <center>';?>  <?php echo ($_SESSION['message']) ;?>
+              <?php unset ($_SESSION['message']); ?> <?php echo '</center></div>';
+
+              }?>
+
+
+
+                <h3 align="center">Book Returning Details</h3>  
+                <br /> 
+                <?php 
+                        //insert data into RETURN table
+
+                        if($num_rows>0)
+                       {
+                          echo '<div class="table-responsive">  
+                                <table id="issue_data" class="table table-striped table-bordered">  
+                                <thead>  
+                                <tr>  
+                                    <td>Member ID</td>  
+                                    <td>Member Name</td>  
+                                    <td>Book ID</td>  
+                                    <td>Title</td>  
+                                    <td>Due Return Date</td>
+                                    <td>Returned Date</td>
+                                    <td>Return Status</td>  
+                                </tr>  
+                                </thead> '; 
+                          
+                          while ($row = mysqli_fetch_array($book))  
+                          {  
+                               echo '  
+                               <tr>  
+                                    <td>'.$row["memberid"].'</td>  
+                                    <td>'.$row["fullname"].'</td>  
+                                    <td>'.$row["bookid"].'</td>  
+                                    <td>'.$row["title"].'</td>  
+                                    <td>'.$row["returndate"].'</td>
+                                    <td>'.$row["completedate"].'</td>
+                                    <td><center><a id="collect" href="return.php?return='.$row["memberid"].'" class="btn btn-primary">Return</a></center></td>
+                                    
+                               </tr>  
+                               ';  
+                               
+                          }  
+                          
+                           echo '</table>  
+                           </div>';   
+                        }
+                        else
+                        {
+                          echo '<h6><i class="fa fa-certificate"></i> &nbsp;Doesnt have any data yet.</h6>';
+
+                        }
+                        
+                ?>
+
+           </div> 
+
+      </section>
        
         
          
@@ -140,9 +247,10 @@
     <!--footer end-->
   </section>
   
+ 
   
   <!-- js placed at the end of the document so the pages load faster -->
-  <script src="../lib/jquery/jquery.min.js"></script>
+  
 
   <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
   <script class="include" type="text/javascript" src="../lib/jquery.dcjqaccordion.2.7.js"></script>
@@ -153,6 +261,12 @@
   <script src="../lib/common-scripts.js"></script>
   <script type="text/javascript" src="../lib/gritter/js/jquery.gritter.js"></script>
   <script type="text/javascript" src="../lib/gritter-conf.js"></script>
+
+  <script>  
+ $(document).ready(function(){  
+      $('#issue_data').DataTable();  
+ });  
+ </script>
 
 </body>
 

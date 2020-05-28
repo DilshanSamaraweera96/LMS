@@ -752,47 +752,81 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 /******content*****/
 
-#main-content
+
+/*------Contact-----*/
+
+#lms
 {
-   min-height: 92vh;
+    background: #FFFFF7;
+    background-size: cover;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    color: #777;
+    min-height: 92vh;
 }
 
-#main-content h1
+#lms .container .alert
 {
-    color: whitesmoke;
-    text-align: center;
-    font-size:50px;
-}
-
-#main-content h1::after
-{
-    content: '';
-    background: #4ECDC4;
-    display: block;
-    height: 4px;
-    width: 300px;
-    margin: 10px auto 5px;
-    
-}
-
-#main-content h3
-{
-  color: #4ECDC4;
-    font-size:40px;
-    letter-spacing: 2px;
-    margin-bottom: 50px;
-    margin-top: 50px;
+    margin-top: 30px;
+    padding: 20px;
+    font-size: 17px;
     font-weight: bold;
 }
-
-#main-content p
+#lms h3
 {
-   color: whitesmoke;
-    font-size:20px;
-    letter-spacing: 2px;
-    padding-bottom: 10px;
+    text-align: center;
+    color: #555;
+    padding-bottom: 20px;
+    margin-top: 70px;
     
 }
+#lms h6
+{
+    color: #555;
+    font-size: 15px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-left:80px;
+}
+#lms h3::after
+{
+    content: '';
+    background: #007bff;
+    display: block;
+    height: 4px;
+    width: 130px;
+    margin: 10px auto 5px;
+}
+
+
+/*** table ****/
+
+.table-responsive{
+    
+   margin-left: 60px;
+   padding-top: 40px;
+}
+.table thead td
+{
+    color: darkslateblue;
+    font-weight: 600;
+    background: #ffdd99;
+    
+}
+
+.table td
+{
+    color: #555;
+    font-weight: 600;
+    font-size: 14px;
+    
+}
+
+.table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #d9f2e5;
+ }
+
 /*footer*/
 .footer {
     background: #4ECDC4;
@@ -804,3 +838,4 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 .footer p {
   margin-bottom: 5px;
 }
+

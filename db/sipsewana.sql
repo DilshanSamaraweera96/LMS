@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 24, 2020 at 05:35 AM
+-- Generation Time: May 26, 2020 at 02:02 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.18
 
@@ -70,7 +70,7 @@ INSERT INTO `addbook` (`book_id`, `title`, `author`, `category`, `quantity`, `la
 (24, 'Think Like A Boss', 'Benjamin Shah', 'Business', 8, 'English', 'business1.jpg', 'business11.png', 'business12.png'),
 (25, 'Drugs In Sport', 'Neil Chester', 'Other', 8, 'English', 'other1.jpg', 'other11.png', 'other12.jpg'),
 (26, 'The Jewish Revolutionary', 'Michael Jones', 'Other', 6, 'English', 'front1.jpg', 'other21.png', 'other22.png'),
-(27, 'Western Country Cook Book', 'Nathan Outlaw', 'Cooking', 3, 'English', 'cook2.jpg', 'cook21.jpg', 'cook22.jpg');
+(27, 'Western Country Cook Book', 'Nathan Outlaw', 'Cooking', 1, 'English', 'cook2.jpg', 'cook21.jpg', 'cook22.jpg');
 
 -- --------------------------------------------------------
 
@@ -80,14 +80,22 @@ INSERT INTO `addbook` (`book_id`, `title`, `author`, `category`, `quantity`, `la
 
 DROP TABLE IF EXISTS `issuebook`;
 CREATE TABLE IF NOT EXISTS `issuebook` (
-  `issue_id` int(11) NOT NULL AUTO_INCREMENT,
-  `member_id` int(11) NOT NULL,
-  `book_id` int(11) NOT NULL,
-  `issuedate` date NOT NULL,
-  `returndate` date NOT NULL,
-  `collect` tinyint(1) NOT NULL,
-  PRIMARY KEY (`issue_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `issueid` int(11) NOT NULL AUTO_INCREMENT,
+  `memberid` int(11) NOT NULL,
+  `bookid` int(11) NOT NULL,
+  `issuedate` date DEFAULT NULL,
+  `collectdate` date DEFAULT NULL,
+  `returndate` date DEFAULT NULL,
+  PRIMARY KEY (`issueid`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `issuebook`
+--
+
+INSERT INTO `issuebook` (`issueid`, `memberid`, `bookid`, `issuedate`, `collectdate`, `returndate`) VALUES
+(3, 3, 27, '2020-05-26', '2020-05-29', NULL),
+(2, 1, 27, '2020-05-26', '2020-05-29', NULL);
 
 -- --------------------------------------------------------
 

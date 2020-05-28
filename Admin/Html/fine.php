@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="../css/zabuto_calendar.css">
   <link rel="stylesheet" type="text/css" href="../lib/gritter/css/jquery.gritter.css" />
   <!-- Custom styles for this template -->
-  <link href="../css/allbooks.css" rel="stylesheet">
+  <link href="../css/fine.css" rel="stylesheet">
   <link href="../css/style-responsive.css" rel="stylesheet">
   <script src="../lib/chart-master/Chart.js"></script>
 
@@ -30,7 +30,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="Dashboard.html" class="logo"><b>Sip<span>Sewana</span></b></a>
+      <a href="../Dashboard.php" class="logo"><b>Sip<span>Sewana</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -61,7 +61,7 @@
           <p class="centered"><img src="../Images/logo.png" class="img-circle" width="80"></p>
           <h5 class="centered">Welcome</h5>
           <li class="mt">
-            <a class="sub-menu" href="../Dashboard.html">
+            <a class="sub-menu" href="../Dashboard.php">
               <i class="fa fa-dashboard"></i>
               <span>Dashboard</span>
               </a>
@@ -73,36 +73,44 @@
               </a>
             <ul class="sub">
               <li><a href="addbooks.html">Add books</a></li>
-              <li><a href="updatebooks.html">Update books</a></li>
-              <li><a href="allbooks.html">All books</a></li>
+              <li><a href="updatebooks.php">Update books</a></li>
+              <li><a href="allbooks.php">All books</a></li>
             </ul>
           </li>
+          
+         <li class="sub-menu">
+            <a href="pending.php">
+            <i class="fa fa-archive"></i>
+            <span>Pending Reservations</span>
+            </a>
+          </li>
+          
           <li class="sub-menu">
-            <a href="issuebooks.html">
+            <a href="issuebooks.php">
               <i class="fa fa-bookmark"></i>
               <span>Issue books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="returnbooks.html">
+            <a href="returnbooks.php">
               <i class="fa fa-address-book"></i>
               <span>Return books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="fine.html">
+            <a href="fine.php">
               <i class="fa fa-info-circle"></i>
               <span>Fine Details</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="member.html">
+            <a href="member.php">
               <i class="fa fa-th"></i>
               <span>Member Details</span>
               </a>
           </li>
           <li>
-            <a href="contact.html">
+            <a href="contact.php">
               <i class="fa fa-envelope"></i>
               <span>Contact </span>
               <span class="label label-theme pull-right mail-info"></span>

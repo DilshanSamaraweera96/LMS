@@ -1,3 +1,14 @@
+<?php
+
+  $mysqli = new mysqli('localhost' , 'root' , '12345' , 'sipsewana') or die(mysqli_error($mysqli)); 
+
+  $result = $mysqli->query("SELECT * FROM user_register") or die($mysqli->error);
+
+?>
+
+<!------Adding collect.php------->
+<?php require_once 'memberdelete.php'; ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -17,6 +28,12 @@
   <link href="../css/member.css" rel="stylesheet">
   <link href="../css/style-responsive.css" rel="stylesheet">
   <script src="../lib/chart-master/Chart.js"></script>
+  
+    <!------Data Tables--------------->
+  <script src="../lib/jquery/jquery.min.js"></script>
+  <script src="../../js/jquery.dataTables.min.js"></script>
+  <script src="../../js/dataTables.bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../css/dataTables.bootstrap.min.css">
 
 </head>
 
@@ -30,7 +47,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="../Dashboard.html" class="logo"><b>Sip<span>Sewana</span></b></a>
+      <a href="../Dashboard.php" class="logo"><b>Sip<span>Sewana</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -61,7 +78,7 @@
           <p class="centered"><img src="../Images/logo.png" class="img-circle" width="80"></p>
           <h5 class="centered">Welcome</h5>
           <li class="mt">
-            <a class="sub-menu" href="../Dashboard.html">
+            <a class="sub-menu" href="../Dashboard.php">
               <i class="fa fa-dashboard"></i>
               <span>Dashboard</span>
               </a>
@@ -73,36 +90,44 @@
               </a>
             <ul class="sub">
               <li><a href="addbooks.html">Add books</a></li>
-              <li><a href="updatebooks.html">Update books</a></li>
-              <li><a href="allbooks.html">All books</a></li>
+              <li><a href="updatebooks.php">Update books</a></li>
+              <li><a href="allbooks.php">All books</a></li>
             </ul>
           </li>
+          
+         <li class="sub-menu">
+            <a href="pending.php">
+            <i class="fa fa-archive"></i>
+            <span>Pending Reservations</span>
+            </a>
+          </li>
+          
           <li class="sub-menu">
-            <a href="issuebooks.html">
+            <a href="issuebooks.php">
               <i class="fa fa-bookmark"></i>
               <span>Issue books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="returnbooks.html">
+            <a href="returnbooks.php">
               <i class="fa fa-address-book"></i>
               <span>Return books</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="fine.html">
+            <a href="fine.php">
               <i class="fa fa-info-circle"></i>
               <span>Fine Details</span>
               </a>
           </li>
           <li class="sub-menu">
-            <a href="member.html">
+            <a href="member.php">
               <i class="fa fa-th"></i>
               <span>Member Details</span>
               </a>
           </li>
           <li>
-            <a href="contact.html">
+            <a href="contact.php">
               <i class="fa fa-envelope"></i>
               <span>Contact </span>
               <span class="label label-theme pull-right mail-info"></span>
@@ -117,60 +142,58 @@
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
-      <section id="Inbox">
-      <div class="container">
-      <h1>Member Details</h1>
-         
-    
-        <h6><i class="fa fa-certificate"></i> &nbsp;You can view details of members in here.</h6>
-          <br>
-          <br>
-          
-        
-      <?php
-
-          $mysqli = new mysqli('localhost' , 'root' , '12345' , 'sipsewana') or die(mysqli_error($mysqli)); 
-          
-          $result = $mysqli->query("SELECT * FROM user_register") or die($mysqli->error);
-
-       ?>
-         
-    <div class="row justify-content-center">
-        <table class="table">
-            <thead>
-                <tr>
-                   <th>MemberID</th>
-                   <th>Full Name</th>
-                   <th>Address</th> 
-                   <th>Email</th>
-                   <th>PhoneNumber</th>
-                   <th>Action</th>   
-                </tr>
-            </thead>
-       <?php
-        
-            while ($row = $result->fetch_assoc()):?>
-            <tr>
-                
-                <td><?php echo $row['mem-id']; ?> </td>
-                <td><?php echo $row['fullname']; ?> </td>
-                <td><?php echo $row['address']; ?> </td>
-                <td><?php echo $row['email']; ?> </td>
-                <td><?php echo $row['phonenumber']; ?> </td>
-               <!-- <td><a href="../../Html/contact.php?delete=<?php echo $row['mem_id']; ?>" class="btn btn-danger">Delete</a> 
-                
-                </td>--->
-            </tr>
-    
-       <?php endwhile; ?> 
-        
-        </table>
-    </div>        
-        
-      </div>
-      </section> 
-      
        
+     <section id="lms">
+           <div class="container">
+             
+          <?php
+           if (isset($_SESSION['message']))
+           { 
+          echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
+            <center>';?>  <?php echo ($_SESSION['message']) ;?>
+          <?php unset ($_SESSION['message']); ?> <?php echo '</center></div>';}?>
+
+
+
+          
+                <h3 align="center">Member Details</h3>  
+                <br />  
+                
+                <h6><i class="fa fa-certificate"></i> &nbsp;You can view member details in here.</h6>
+                
+                <div class="table-responsive">  
+                     <table id="issue_data" class="table table-striped table-bordered">  
+                          <thead>  
+                               <tr>  
+                               <td>MemberID</td>
+                               <td>Full Name</td>
+                               <td>Address</td> 
+                               <td>Email</td>
+                               <td>PhoneNumber</td>
+                               <td>Action</td> 
+                               </tr>  
+                          </thead>  
+                          <?php  
+                          while ($row = mysqli_fetch_array($result))  
+                          {  
+                               echo '  
+                               <tr>  
+                                    <td>'.$row["mem-id"].'</td>  
+                                    <td>'.$row["fullname"].'</td>  
+                                    <td>'.$row["address"].'</td>  
+                                    <td>'.$row["email"].'</td>  
+                                    <td>'.$row["phonenumber"].'</td>
+                                    <td><center><a href="memberdelete.php?delete='.$row["mem-id"].'" class="btn btn-danger">Delete</a></center></td>  
+                               </tr>  
+                               ';  
+                          }  
+                          ?>  
+                     </table>  
+                </div>  
+           </div> 
+
+      
+      </section>
         
          
            <!--footer start-->
@@ -183,10 +206,6 @@
     </footer>
     <!--footer end-->
   </section>
-  
-  
-  <!-- js placed at the end of the document so the pages load faster -->
-  <script src="../lib/jquery/jquery.min.js"></script>
 
   <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
   <script class="include" type="text/javascript" src="../lib/jquery.dcjqaccordion.2.7.js"></script>
@@ -197,6 +216,12 @@
   <script src="../lib/common-scripts.js"></script>
   <script type="text/javascript" src="../lib/gritter/js/jquery.gritter.js"></script>
   <script type="text/javascript" src="../lib/gritter-conf.js"></script>
+  
+    <script>  
+ $(document).ready(function(){  
+      $('#issue_data').DataTable();  
+ });  
+ </script>
 
 </body>
 
