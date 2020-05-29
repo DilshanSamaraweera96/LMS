@@ -179,7 +179,7 @@ $right = $mysqli->query($query);
                 <h3 align="center">Book Reservation Details</h3>  
                 <br />  
                 
-                <h6><i class="fa fa-certificate"></i> &nbsp;You can view Book Reservation details in here.</h6>
+                <h6><i class="fa fa-certificate"></i> &nbsp;YOU CAN VIEW BOOK RESERVATIONS IN HERE.</h6>
                 
                 <div class="table-responsive">  
                      <table id="issue_data" class="table table-striped table-bordered">  
@@ -191,7 +191,7 @@ $right = $mysqli->query($query);
                                     <td>Title</td>  
                                     <td>Issue Date</td>
                                     <td>Collect Date</td>
-                                    <td>Due Return Date</td>
+                                    <td>Return Date</td>
                                     <td>Collect Status</td>  
                                </tr>  
                           </thead>  
@@ -211,7 +211,7 @@ $right = $mysqli->query($query);
 
                             if(!empty('.$row["returndate"].'))
                             {
-                            echo' <td><center><a id="collect" href="collect.php?collect='.$row["memberid"].'" class="btn btn-primary">Collect</a></center></td> ';    
+                            echo' <td><center><a id="collect" href="collect.php?collect='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Collect</a></center></td> ';    
                              
                             }
                             else

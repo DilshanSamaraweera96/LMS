@@ -179,10 +179,20 @@ $num_rows= mysqli_num_rows($book);
 
               }?>
 
+              <?php
+              if (isset($_SESSION['msg']))
+              { 
+              echo'<div class="alert ';echo ($_SESSION['ptype']) ;echo '" role="alert">
+                <center>';?>  <?php echo ($_SESSION['msg']) ;?>
+              <?php unset ($_SESSION['msg']); ?> <?php echo '</center></div>';
+
+              }?>
+
 
 
                 <h3 align="center">Book Returning Details</h3>  
-                <br /> 
+                <br />
+                <h6><i class="fa fa-certificate"></i> &nbsp;YOU CAN VIEW BOOK RETURNING DETAILS IN HERE.</h6> 
                 <?php 
                         //insert data into RETURN table
 
@@ -197,7 +207,7 @@ $num_rows= mysqli_num_rows($book);
                                     <td>Book ID</td>  
                                     <td>Title</td>  
                                     <td>Due Return Date</td>
-                                    <td>Returned Date</td>
+                                    <td>Book Returned Date</td>
                                     <td>Return Status</td>  
                                 </tr>  
                                 </thead> '; 
@@ -212,7 +222,7 @@ $num_rows= mysqli_num_rows($book);
                                     <td>'.$row["title"].'</td>  
                                     <td>'.$row["returndate"].'</td>
                                     <td>'.$row["completedate"].'</td>
-                                    <td><center><a id="collect" href="return.php?return='.$row["memberid"].'" class="btn btn-primary">Return</a></center></td>
+                                    <td><center><a id="collect" href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Return</a></center></td>
                                     
                                </tr>  
                                ';  

@@ -243,9 +243,138 @@
              <p>7.You can check user's messages<br></p>
           
           </div>
-          
-          
-          
+
+
+
+    <!--------------------------- AUTO PROCESS RESERVE NOT COLLECT--------------------------------->
+    <?php
+    
+    
+    $getcollect = "SELECT * from issuebook where returndate IS NULL AND issuedate IS NOT NULL";
+
+    $collectquery = mysqli_query($mysqli,$getcollect);
+
+
+    while(!empty($colectres = mysqli_fetch_assoc($collectquery)))
+    {
+       
+    $cdate = $colectres['collectdate'];
+    $today = date('Y-m-d');
+
+    //convert string to object
+    $coldate = new DateTime($cdate);
+    $ada = new DateTime($today);
+
+    // calculates the difference between DateTime objects 
+    $interval = date_diff($ada,$coldate);
+
+    // printing result in days format 
+     $x=$interval->format('%R%a');
+    
+    //auto process
+    if($x>=0)
+    {
+      //if difference > =0 CONTINUE normal process
+    }
+    else
+    {
+      //IF <0 EXCUTE AUTO PROCESS
+      $cmem = $colectres['memberid'];
+      $cbook = $colectres['bookid'];
+
+              //Check avalibility of pending request
+
+              $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$cbook'";
+
+              $penr = mysqli_query($mysqli,$pen);
+      
+              $penc = mysqli_fetch_assoc($penr);
+      
+              $p = $penc['memberid'];
+      
+      
+             //check quantity is 0
+      
+              $chkqty = "SELECT quantity FROM addbook WHERE book_id='$cbook'";
+      
+              $chkres = mysqli_query($mysqli, $chkqty);
+      
+              $chkchk = mysqli_fetch_assoc($chkres);
+      
+              $c= $chkchk['quantity'];
+      
+      
+              //issue dates to pending reservations
+      
+              if($c==0 && !empty($p))
+              {
+                  $currentdate = date('Y-m-d');
+                  $collectdate = date('Y-m-d', strtotime($currentdate.'+3 days'));
+      
+                  $assign = "UPDATE issuebook SET issuedate='$currentdate', collectdate='$collectdate' WHERE memberid='$p'";
+      
+                  $assignr = mysqli_query($mysqli, $assign);
+      
+                  //reduce quantity
+      
+                  if($assignr == true)
+                  {    
+                      $reqty ="UPDATE addbook SET quantity = quantity -1 WHERE book_id='$cbook'";
+      
+                      $reqtyr = mysqli_query($mysqli, $reqty);
+      
+                      if($reqtyr == true)
+                      {
+      
+                        echo'<div class="alert alert-success" role="alert"><center><b>Book AUTOMATICALLY Assigned to Pending Reservations!</center></b></div>';
+      
+      
+                      }
+                      else
+                      {
+      
+                        echo'<div class="alert alert-danger" role="alert"><center><b>Error!</center></b></div>';
+      
+                      }
+      
+                  }
+              }
+
+      //delete uncollect order
+
+      $delissue = "DELETE FROM issuebook WHERE memberid='$cmem' AND bookid='$cbook'";
+
+      $delquery = mysqli_query($mysqli, $delissue);
+
+      if($delquery==true)
+      {
+        $reqty ="UPDATE addbook SET quantity = quantity +1 WHERE book_id='$cbook'";
+
+        $reqtyr = mysqli_query($mysqli, $reqty);
+
+        if($reqtyr == true)
+        {
+
+        echo'<div class="alert alert-danger" role="alert"><center><b>Reservation removed cuz didnt collect the book before due time</center></b></div>';
+
+
+        }
+        else
+        {
+
+          echo'<div class="alert alert-danger" role="alert"><center><b>Error!</center></b></div>';
+
+        }
+      }
+      //delete end
+
+    }
+    
+    } 
+    ?>  
+      
+    <!----------------------------------------------------------------- AUTO PROCESS END---------------------------------------------------------- -->
+    
       </section>
     </section>
     <!--main content end-->

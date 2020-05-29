@@ -14,11 +14,34 @@ $result = mysqli_query($mysqli, $sql);
 
 <?php
 session_start();
-
 if(!isset($_SESSION['LoggedInUserId']))
 {
   header("location:../index.php");
 }
+?>
+<?php
+
+    $mem= $_SESSION['id'];
+   
+    //CHECK BOOK COUNT OF SAME BOOK
+    $check = "SELECT * FROM issuebook WHERE bookid='$rownum' AND memberid='$mem'";
+
+    $checkresult = mysqli_query($mysqli, $check);
+
+    $getcheck = mysqli_fetch_assoc($checkresult);
+
+    $dil = $getcheck['bookid'];
+
+    //GET ORDER COUNT OF SAME MEMBER
+
+    $getcount = "SELECT COUNT('memberid') AS member FROM issuebook WHERE memberid='$mem'";
+
+    $getcountquery = mysqli_query($mysqli,$getcount);
+
+    $gecountresult = mysqli_fetch_assoc($getcountquery);
+
+    $getcm = $gecountresult['member'];
+
 ?>
 
 <!doctype html>
@@ -94,19 +117,23 @@ if(!isset($_SESSION['LoggedInUserId']))
                 //fetch cover images from database  
                 while ($row = mysqli_fetch_array($result)){
                     
-    echo "<div style='background-image:url(../Admin/upload/".$row['cover'].");'></div>";
-    echo "<div style='background-image:url(../images/Book/view/covers1.jpg)'></div>";
+    echo '<div style="background-image:url(../Admin/upload/'.$row["cover"].');"></div>
+          <div style="background-image:url(../images/Book/view/covers1.jpg)"></div>';
                     
-    echo "<div class='viewbook'>";
-    echo"<p>BookID</p>";                
-    echo"<h1>".$row['book_id']."</h1>";
-    echo"<font color='#003333'><h1>".$row['title']."</h1></font>"; 
-    echo"<font color='#862d2d'><h3>".$row['author']."</h3></font>";
-    echo"<br><h3>IN</h3><font color=' #5c5c3d'><h3>".$row['language']."</h3></font>";
-    echo"<button name='regbtn' class='js-order' data-book-id='".$row['book_id']."'>Reserve Book</button>";
-    echo "</div>";
-                    
-	echo "<div class='preview'> <h1>Page <br>Preview</h1></div>";
+    echo "<div class='viewbook'>
+           <p>BookID</p>                
+           <font color='#D3D3D3'><h1>".$row['book_id']."</h1></font>
+           <font color='#fff'><h1>".$row['title']."</h1></font> 
+           <font color='#862d2d'><h3>".$row['author']."</h3></font>
+           <br><font color=' #6b6b47'><h3>IN</h3></font><font color=' #ffff66'><h3>".$row['language']."</h3></font>";
+           //button
+           if(empty($dil) && $getcm<3)
+           {
+           echo'<a href="reserve.php?book='.$row["book_id"].'&mem='.$mem.'">Reserve Book</a>';
+           }
+    
+    echo "</div>";               
+	  echo "<div class='preview'></div>";
     echo "<div style='background-image:url(../Admin/upload/".$row['firstimage'].");'></div>";
     echo "<div style='background-image:url(../Admin/upload/".$row['firstimage'].");'></div>";
     echo "<div style='background-image:url(../Admin/upload/".$row['nextimage'].");'></div>";

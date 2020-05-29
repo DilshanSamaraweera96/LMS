@@ -3,6 +3,7 @@
  $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
 
  $query = "SELECT
+ i.issueid,
  i.memberid,
  u.fullname,
  i.bookid,
@@ -16,8 +17,7 @@
  user_register u ON i.memberid = u.`mem-id`
  INNER JOIN
  addbook b ON i.bookid = b.book_id 
- WHERE i.issuedate IS NULL
- ORDER BY i.issueid DESC"; 
+ WHERE i.issuedate IS NULL"; 
 
 
 
@@ -29,6 +29,8 @@ $num_rows= mysqli_num_rows($book);
 
  ?>
 
+<!------Adding pencancel.php------->
+<?php require_once 'pencancel.php'; ?>
 
 
 <!DOCTYPE html>
@@ -164,9 +166,22 @@ $num_rows= mysqli_num_rows($book);
         *********************************************************************************************************************************************************** -->
    
    <section id="lms">
-                 <div class="container">  
+                 <div class="container">
+                   
+              <?php
+              if (isset($_SESSION['msg']))
+              { 
+              echo'<div class="alert ';echo ($_SESSION['ptype']) ;echo '" role="alert">
+                <center>';?>  <?php echo ($_SESSION['msg']) ;?>
+              <?php unset ($_SESSION['msg']); ?> <?php echo '</center></div>';
+
+              }?>
+
+
                 <h3 align="center">Book Reservation Pending Details</h3>  
-                <br /> 
+                <br />
+                
+                <h6><i class="fa fa-certificate"></i> &nbsp;YOU CAN VIEW PENDING BOOK RESERVATIONS IN HERE.</h6>
                 <?php 
 
                       echo"$num_rows";
@@ -178,7 +193,8 @@ $num_rows= mysqli_num_rows($book);
                           echo '<div class="table-responsive">  
                                 <table id="issue_data" class="table table-striped table-bordered">  
                                 <thead>  
-                                <tr>  
+                                <tr>
+                                    <td>Issue ID</td>    
                                     <td>Member ID</td>  
                                     <td>Member Name</td>  
                                     <td>Book ID</td>  
@@ -193,13 +209,14 @@ $num_rows= mysqli_num_rows($book);
                           {  
                                echo '  
                                <tr>  
+                                    <td>'.$row["issueid"].'</td>
                                     <td>'.$row["memberid"].'</td>  
                                     <td>'.$row["fullname"].'</td>  
                                     <td>'.$row["bookid"].'</td>  
                                     <td>'.$row["title"].'</td>  
                                     <td>'.$row["issuedate"].'</td>
                                     <td>'.$row["collectdate"].'</td>
-                                    <td><center><button class="btn btn-primary">Cancel</button></center></td>  
+                                    <td><center><a id="collect" href="pencancel.php?mem='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-danger">Cancel</a></center></td>  
                                </tr>  
                                ';  
                           }  

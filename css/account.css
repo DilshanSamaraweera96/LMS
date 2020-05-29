@@ -457,7 +457,6 @@
 
 #accountd{
     padding-top: 100px;
-    color: #eee;
     background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),  url(../Images/account/actbg.jpg);
     padding-bottom: 120px;
     
@@ -524,6 +523,43 @@ section .section-title {
     color: #333333;
     
 }
+
+/*------issue table-----*/
+
+
+#lms .container .alert
+{
+    margin-top: 30px;
+    padding: 20px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+/*** table ****/
+
+#lms .table-responsive{
+   padding-top: 40px;
+}
+#lms .table thead td
+{
+    color: darkslateblue;
+    font-weight: 600;
+    background: #ffdd99;
+    
+}
+
+.table td
+{
+    color: #555;
+    font-weight: 600;
+    font-size: 14px;
+    
+}
+
+.table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #d9f2e5;
+ }
 /***** Footer *****/
 
 .footer-top 

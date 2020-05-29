@@ -1,3 +1,5 @@
+/* Import fonts */
+@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
 
   @font-face {
       font-family: 'Plain';
@@ -531,32 +533,35 @@ section .section-title {
 
 #bookcard .flipbook-viewport .preview
 {
-    background: #ffffb3;
+    background-image:url(../Images/Book/view/content.png); 
 }
 
 #bookcard .flipbook-viewport .viewbook
 {
-    background: #ffffb3;
+    background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),  url(../Images/Book/view/3.jpg); 
 }
 
 #bookcard .flipbook-viewport .viewbook h1 
 {
     text-align: center;
+    font-family: ruda;
 }
 
 #bookcard .flipbook-viewport .viewbook h3
 {
     text-align: center;
+    font-family: ruda;
 }
 #bookcard .flipbook-viewport .viewbook p
 {
     text-align: center;
     bottom: 50%;
     transform: translateY(90%);
+    font-family: ruda;
 }
 
 
-#bookcard .flipbook-viewport .viewbook button {
+#bookcard .flipbook-viewport .viewbook a {
   border: none;
   width: 80%;
   height: 46px;
@@ -581,7 +586,7 @@ section .section-title {
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s; }
  
-#bookcard .flipbook-viewport .viewbook button:before {
+#bookcard .flipbook-viewport .viewbook a:before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -601,9 +606,9 @@ section .section-title {
     -webkit-transition-timing-function: ease-out;
     transition-timing-function: ease-out; }
 
-#bookcard .flipbook-viewport .viewbook button:hover {
+#bookcard .flipbook-viewport .viewbook a:hover {
     color: white; }
 
-#bookcard .flipbook-viewport .viewbook button:hover:before {
+#bookcard .flipbook-viewport .viewbook a:hover:before {
       -webkit-transform: scaleX(1);
       transform: scaleX(1); }
