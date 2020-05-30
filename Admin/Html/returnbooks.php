@@ -83,7 +83,7 @@ $num_rows= mysqli_num_rows($book);
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="../adminlog.html">Logout</a></li>
+          <li><a class="logout" href="logout.php">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -221,11 +221,18 @@ $num_rows= mysqli_num_rows($book);
                                     <td>'.$row["bookid"].'</td>  
                                     <td>'.$row["title"].'</td>  
                                     <td>'.$row["returndate"].'</td>
-                                    <td>'.$row["completedate"].'</td>
-                                    <td><center><a id="collect" href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Return</a></center></td>
-                                    
-                               </tr>  
-                               ';  
+                                    <td>'.$row["completedate"].'</td>';
+
+                            if($row["completedate"] == null)
+                            {
+                               echo'     <td><center><a id="collect" href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Return</a></center></td>';
+                            }
+                            else
+                            {
+                              echo' <td><center><a href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-warning">Returned</a></center></td> ';
+                            }        
+                            echo'   </tr>  ';
+                                 
                                
                           }  
                           

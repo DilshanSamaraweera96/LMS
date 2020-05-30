@@ -1,9 +1,27 @@
+<!------Adding collect.php------->
+<?php require_once 'changepass.php'; ?>
+
 <html>
 <head>
 <title>MediLife Login Form</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/aos.css">
      <link rel="stylesheet" type="text/css" href="../Css/Resetpass.css">
     </head>
 <body>
+
+
+          <?php
+           if (isset($_SESSION['message']))
+           { 
+            echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
+            <center>';?>  <?php echo ($_SESSION['message']) ;?>
+            <?php unset ($_SESSION['message']); ?> <?php echo '</center></div>';
+
+           }?>
+
+
      <div class="loginbox">
     <img src="../Images/loginlogo.jpg" id="login" class="avatar">
 

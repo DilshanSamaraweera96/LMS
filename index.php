@@ -1,3 +1,7 @@
+<?php
+ session_start();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +70,7 @@
                    <li><button class="btn bordered mt-0" data-toggle="modal" 
                                        
                                         <?php 
-                                        session_start();
+                                       
                                         if(isset($_SESSION['LoggedInUserId']))
                                         {
                                             echo "hidden='hidden'";
@@ -74,18 +78,60 @@
                     <li><a href="https://fb.com" class="fa fa-facebook"></a></li>
                     <li><a href="#" class="fa fa-twitter"></a></li>
                     <li><a href="#" class="fa fa-instagram"></a></li>
-                    
-                    <li>
-                      <a class="btn" href="#" role="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fa fa-bell"></i><span class="badge">5</span></a>
 
-                      <div class="dropdown-menu" aria-labelledby="dropdown1">
-                      <a class="dropdown-item" href="#">
-                      <small>June5 5,2020</small><br>
-                      your reservation accepted.please come to library to collect the book.</a>
-                      <div class="dropdown-divider"></div>
+                    <!----------------hide notification if userlogout  -->
+                    <?php
+                    if(isset($_SESSION['LoggedInUserId']))
+                     {
+
+                    //connect db
+                      $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli));
+
+                      $userid =$_SESSION['id'];
+                      
+
+                      //get notfication
+                      $notif = "SELECT * FROM notification WHERE memberid = '$userid'";
+                      $notifquery = mysqli_query($mysqli, $notif);
+                      $nm_rows= mysqli_num_rows($notifquery);
+                      
+                    
+                     echo' <li>
+                        <a class="btn" href="#" role="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bell"></i><span class="badge">'; if($nm_rows>0){echo $nm_rows;} echo'</span></a>
+
+                        <div id="noti" class="dropdown-menu" aria-labelledby="dropdown1">';
+        
+                      if($nm_rows>0)
+                      {
+                        while($notifcheck = mysqli_fetch_array($notifquery))
+                        {
+                        
+                         $notdate = $notifcheck['date']; 
+                        
+                            // <!-------notification msg------------>
+                          echo ' <a class="dropdown-item" href="html/not.php?mem='.$userid.'&date='.$notdate.'">';
+                          if($notdate) {
+                            $notdate = date("F d, Y, g:i a", strtotime($notdate));
+                          } else {
+                              $notdate = '';
+                          }
+                          echo' <small>'; echo $notdate ; echo'</small><br>';
+                            echo' '.$notifcheck["msg"].' </a>';
+
+                            echo' <div class="dropdown-divider"></div>';
+                        
+                        }
+                      }
+                      else
+                      {
+                        echo '<a class="dropdown-item" href="#">No Notification Found!</a>';
+                      }
+                    echo'
                       </div>
-                     </li>
+                     </li>';
+
+                    }?>
                         
    
                 </ul>

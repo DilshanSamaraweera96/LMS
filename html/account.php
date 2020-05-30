@@ -409,8 +409,88 @@
                     </section>
 
 					</div>
-					
+                    
+                    <!---------------fine details ------------------->
 					<div class="tab-pane fade" id="nav-fine" role="tabpanel" aria-labelledby="nav-fine-tab">
+
+
+                    <?php
+                     $userid =$_SESSION['id'];
+                     
+                     $fine = "SELECT
+                     i.memberid,
+                     u.fullname,
+                     i.bookid,
+                     b.title,
+                     i.returndate,
+                     i.completedate,
+                     i.fine
+                     
+                     FROM
+                     issuebook i
+                     INNER JOIN
+                     user_register u ON i.memberid = u.`mem-id`
+                     INNER JOIN
+                     addbook b ON i.bookid = b.book_id
+                     WHERE memberid = '$userid' AND i.fine IS NOT NULL AND i.payday IS NULL";
+
+                     $getfine = mysqli_query($mysqli,$fine);
+
+                     $fine_rows= mysqli_num_rows($getfine);
+
+
+                    ?>
+
+                    <!-- return table -->
+                    <section id="lms">
+                    <div class="container">
+                    <div class="table-responsive">
+                        
+                    
+                    <?php 
+
+                if($fine_rows>0)
+                   {
+                    echo' <table id="issue_data" class="table table-striped table-bordered">  
+                          <thead>  
+                               <tr>  
+                                    <td>Member ID</td>  
+                                    <td>Member Name</td>  
+                                    <td>Book ID</td>  
+                                    <td>Title</td>  
+                                    <td>Due Return Date</td>
+                                    <td>Returned Date</td>
+                                    <td>Penalty</td>  
+                               </tr>  
+                          </thead> '; 
+     
+                          while ($finecheck = mysqli_fetch_array($getfine))  
+                          {  
+                               echo '  
+                               <tr>  
+                                    <td>'.$finecheck["memberid"].'</td>  
+                                    <td>'.$finecheck["fullname"].'</td>  
+                                    <td>'.$finecheck["bookid"].'</td>  
+                                    <td>'.$finecheck["title"].'</td>  
+                                    <td>'.$finecheck["returndate"].'</td>
+                                    <td>'.$finecheck["completedate"].'</td>
+                                    <td>'.$finecheck["fine"].'</td>
+                                    
+                                </tr> ';
+                          }  
+                           
+                    echo '</table>'; 
+                    }
+                    else
+                    {
+
+                        echo'<h6><b><font color="#555"><i class="fa fa-certificate"></i> &nbsp;You Dont Have Any Payment To Pay For Fine!</font></b></h6>';
+
+                    }               
+                    ?> 
+                    </div>
+                    </div>
+                    </section>
 
 					</div>
 					

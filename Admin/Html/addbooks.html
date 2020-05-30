@@ -45,7 +45,7 @@
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="../adminlog.html">Logout</a></li>
+          <li><a class="logout" href="logout.php">Logout</a></li>
         </ul>
       </div>
     </header>

@@ -2,6 +2,54 @@
  // Instantiate DB & connect
  $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
 
+ //get returndate and completedate into a variable
+
+ $getday= "SELECT * FROM issuebook WHERE returndate AND completedate IS NOT NULL";
+
+ $dayright = $mysqli->query($getday);
+
+ while($daycheck = mysqli_fetch_assoc($dayright))
+{
+
+$rdate = $daycheck['returndate'];
+
+$cdate = $daycheck['completedate'];
+
+    //convert string to object
+    $coldate = new DateTime($cdate);
+    $roldate = new DateTime($rdate);
+
+    // calculates the difference between DateTime objects 
+    $interval = date_diff($roldate,$coldate);
+
+    // printing result in days format 
+     $x=$interval->format('%R%a');
+    
+    //auto process
+    if($x>=0)
+    {
+      //if difference > =0 CONTINUE normal process
+      $penalty = $x * 10;
+      
+    //update issue table with added penalty
+    $upfine = "UPDATE issuebook SET fine ='$penalty' WHERE returndate='$rdate' AND completedate='$cdate'";
+
+    $sex = mysqli_query($mysqli,$upfine);
+    }
+    else
+    {
+      //nothing happens if not exceed returndate
+     
+    }
+}
+ ?>
+
+
+
+<?php  
+ // Instantiate DB & connect
+ $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
+
  $query = "SELECT
  i.memberid,
  u.fullname,
@@ -9,7 +57,8 @@
  b.title,
  i.returndate,
  i.completedate,
- i.penalty
+ i.fine,
+ i.payday
  
  FROM
  issuebook i
@@ -17,8 +66,7 @@
  user_register u ON i.memberid = u.`mem-id`
  INNER JOIN
  addbook b ON i.bookid = b.book_id 
- WHERE i.returndate IS NOT NULL
- ORDER BY i.issueid DESC";
+ WHERE i.fine IS NOT NULL";
  
 $book = mysqli_query($mysqli, $query); 
 
@@ -84,7 +132,7 @@ $num_rows= mysqli_num_rows($book);
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="../adminlog.html">Logout</a></li>
+          <li><a class="logout" href="logout.php">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -180,22 +228,11 @@ $num_rows= mysqli_num_rows($book);
 
               }?>
 
-              <?php
-              if (isset($_SESSION['msg']))
-              { 
-              echo'<div class="alert ';echo ($_SESSION['ptype']) ;echo '" role="alert">
-                <center>';?>  <?php echo ($_SESSION['msg']) ;?>
-              <?php unset ($_SESSION['msg']); ?> <?php echo '</center></div>';
-
-              }?>
-
-
-
-                <h3 align="center">Member Fine Details</h3>  
+              
+                <h3 align="center">Book Returning Details</h3>  
                 <br />
-                
-                <h6><i class="fa fa-certificate"></i> &nbsp;YOU CAN VIEW MEMBER FINE DETAILS IN HERE.</h6>
 
+                <h6><i class="fa fa-certificate"></i> &nbsp;YOU CAN VIEW BOOK RETURNING DETAILS IN HERE.</h6> 
                 <?php 
                         //insert data into RETURN table
 
@@ -226,11 +263,17 @@ $num_rows= mysqli_num_rows($book);
                                     <td>'.$row["title"].'</td>  
                                     <td>'.$row["returndate"].'</td>
                                     <td>'.$row["completedate"].'</td>
-                                    <td>'.$row["penalty"].'</td>
-                                    <td><center><a id="collect" href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Pay</a></center></td>
-                                    
-                               </tr>  
-                               ';  
+                                    <td>'.$row["fine"].'</td>';
+                                
+                                    if($row["payday"] == null)
+                                    {
+                                       echo'<td><center><a href="pay.php?mem='.$row["memberid"].'&book='.$row["bookid"].'&pay='.$row["fine"].'" class="btn btn-primary">Pay</a></center></td>';
+                                      }
+                                    else
+                                      {
+                                        echo' <td><center><a href="pay.php?mem='.$row["memberid"].'&book='.$row["bookid"].'&pay='.$row["fine"].'" class="btn btn-warning">Paid</a></center></td> ';
+                                      }        
+                                      echo'   </tr>  '; 
                                
                           }  
                           

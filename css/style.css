@@ -662,18 +662,45 @@
     color: var(--primary-color);
   }
 
+/*------NOTIFICATION---------------*/
 #dropdown1 {
     
     margin-top: -6px;
+      background-color: transparent;
+      border-color: #fff;
+      border-style: solid;
+      border-top: none;
+      border-right: none;
+      border-left: none;
 }
 
 #dropdown1 .badge{
     
   position: absolute;
   font-size: 0.7em;
-  top: 1px;
+  top: -4px;
   color: red;
-  right: 6px;
+  right: 3px;
+}
+#noti
+{
+    background: #171819;
+}
+#noti a
+{
+    color: #555;
+    background: #ffffb3;
+    font-size: 11px;
+    border-radius: 10px;
+}
+#noti a:hover
+{
+    color: #fff;
+    background: #cc6666;
+    font-size: 11px;
+    border-radius: 10px;
+    transition: color 0.6s linear;
+    transition: background 0.6s linear; 
 }
 
   /*---------------------------------------

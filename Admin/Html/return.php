@@ -62,7 +62,29 @@ if( isset($_GET['return'])){
 
                 $reqtyr = mysqli_query($mysqli, $reqty);
 
-                if($reqtyr == true)
+                                        //SET NOTIFICATION 
+
+                                        $ada = date('Y-m-d H:i:s');
+
+                                        //Get msg into variable
+                            
+                                        $gtmsg= "SELECT msg FROM notification WHERE msgid=4";
+                            
+                                        $colmsg = mysqli_query($mysqli,$gtmsg);
+                            
+                                        $colmsgcheck = mysqli_fetch_assoc($colmsg);
+                            
+                                        $msg = $colmsgcheck['msg'];
+                            
+                            
+                            
+                                        $not = "INSERT INTO notification(memberid, msg, date) VALUES ('$p','$msg','$ada')";
+                            
+                                        $notquery = mysqli_query($mysqli, $not);
+                            
+                                        //notification entered.
+
+                if($reqtyr == true && $notquery==true)
                 {
 
                 $_SESSION['msg'] = "Book AUTOMATICALLY Assigned to Pending Reservations!";
@@ -102,8 +124,30 @@ if( isset($_GET['return'])){
 
             $right = $mysqli->query($query);
 
+                        //SET NOTIFICATION 
 
-            if($right && $quanres==true)
+                        $dawasa = date('Y-m-d H:i:s');
+
+                        //Get msg into variable
+            
+                        $remsg= "SELECT msg FROM notification WHERE msgid=2";
+            
+                        $relmsg = mysqli_query($mysqli,$remsg);
+            
+                        $remsgcheck = mysqli_fetch_assoc($relmsg);
+            
+                        $returnmsg = $remsgcheck['msg'];
+            
+            
+            
+                        $renot = "INSERT INTO notification(memberid, msg, date) VALUES ('$mem_id','$returnmsg','$dawasa')";
+            
+                        $renotquery = mysqli_query($mysqli, $renot);
+            
+                        //notification entered.
+
+
+            if($right && $quanres==true && $renotquery==true)
                 {
 
 

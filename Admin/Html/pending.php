@@ -84,7 +84,7 @@ $num_rows= mysqli_num_rows($book);
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="../adminlog.html">Logout</a></li>
+          <li><a class="logout" href="logout.php">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -178,13 +178,19 @@ $num_rows= mysqli_num_rows($book);
               }?>
 
 
-                <h3 align="center">Book Reservation Pending Details</h3>  
+                <h3 align="center">Book Reservation Pending Details</h3> 
+
+                
                 <br />
+                
+
+
+                
                 
                 <h6><i class="fa fa-certificate"></i> &nbsp;YOU CAN VIEW PENDING BOOK RESERVATIONS IN HERE.</h6>
                 <?php 
 
-                      echo"$num_rows";
+                      
 
                         //insert data into issue table
 

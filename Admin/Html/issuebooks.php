@@ -82,7 +82,7 @@ $right = $mysqli->query($query);
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="../adminlog.html">Logout</a></li>
+          <li><a class="logout" href="logout.php">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -168,8 +168,8 @@ $right = $mysqli->query($query);
            <?php
            if (isset($_SESSION['message']))
            { 
-          echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
-            <center>';?>  <?php echo ($_SESSION['message']) ;?>
+                         echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
+                          <center>';?>  <?php echo ($_SESSION['message']) ;?>
                           <?php unset ($_SESSION['message']); ?> <?php echo '</center></div>';
 
            }?>
@@ -209,7 +209,7 @@ $right = $mysqli->query($query);
                                     <td>'.$row["returndate"].'</td> ';
                            
 
-                            if(!empty('.$row["returndate"].'))
+                            if($row["returndate"] == null)
                             {
                             echo' <td><center><a id="collect" href="collect.php?collect='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Collect</a></center></td> ';    
                              
@@ -217,7 +217,7 @@ $right = $mysqli->query($query);
                             else
                             {
 
-                              echo' <td><center><a href="#" class="btn btn-danger">Collected</a></center></td> ';    
+                              echo' <td><center><a href="#" class="btn btn-warning">Collected</a></center></td> ';    
                             }
                              echo'</tr> ';
                           }  

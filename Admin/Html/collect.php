@@ -27,7 +27,30 @@ if( isset($_GET['collect'])){
 
             $right = $mysqli->query($query);
 
-            if($right==true)
+
+            //SET NOTIFICATION 
+
+            $ada = date('Y-m-d H:i:s');
+
+            //Get msg into variable
+
+            $gtmsg= "SELECT msg FROM notification WHERE msgid=1";
+
+            $colmsg = mysqli_query($mysqli,$gtmsg);
+
+            $colmsgcheck = mysqli_fetch_assoc($colmsg);
+
+            $msg = $colmsgcheck['msg'];
+
+
+
+            $not = "INSERT INTO notification(memberid, msg, date) VALUES ('$mem_id','$msg','$ada')";
+
+            $notquery = mysqli_query($mysqli, $not);
+
+            //notification entered.
+            
+            if($right==true && $notquery==true)
                 {
                 $_SESSION['message'] = "Member Collected The Reserved Book!";
                 $_SESSION['type'] = "alert-success";

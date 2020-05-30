@@ -2,7 +2,13 @@
  // Instantiate DB & connect
  $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
 ?>
-
+<?php
+session_start();
+if(!isset($_SESSION['LoggedInUserId']))
+{
+  header("location:adminlog.html");
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -54,7 +60,7 @@
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="adminlog.html">Logout</a></li>
+          <li><a class="logout" href="html/logout.php">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -322,8 +328,30 @@
                       $reqty ="UPDATE addbook SET quantity = quantity -1 WHERE book_id='$cbook'";
       
                       $reqtyr = mysqli_query($mysqli, $reqty);
+
+                                //SET NOTIFICATION 
+
+                                $adasaduda = date('Y-m-d H:i:s');
+
+                                //Get msg into variable
+                    
+                                $gtmsg= "SELECT msg FROM notification WHERE msgid=4";
+                    
+                                $colmsg = mysqli_query($mysqli,$gtmsg);
+                    
+                                $colmsgcheck = mysqli_fetch_assoc($colmsg);
+                    
+                                $msg = $colmsgcheck['msg'];
+                    
+                    
+                    
+                                $not = "INSERT INTO notification(memberid, msg, date) VALUES ('$p','$msg','$adasaduda')";
+                    
+                                $notquery = mysqli_query($mysqli, $not);
+                    
+                                //notification entered.
       
-                      if($reqtyr == true)
+                      if($reqtyr == true && $notquery==true)
                       {
       
                         echo'<div class="alert alert-success" role="alert"><center><b>Book AUTOMATICALLY Assigned to Pending Reservations!</center></b></div>';
@@ -346,7 +374,29 @@
 
       $delquery = mysqli_query($mysqli, $delissue);
 
-      if($delquery==true)
+                    //SET NOTIFICATION 
+
+                    $heta = date('Y-m-d H:i:s');
+
+                    //Get msg into variable
+        
+                    $delmsg= "SELECT msg FROM notification WHERE msgid=5";
+        
+                    $deletemsg = mysqli_query($mysqli,$delmsg);
+        
+                    $deletemsgcheck = mysqli_fetch_assoc($deletemsg);
+        
+                    $delmsg = $deletemsgcheck['msg'];
+        
+        
+        
+                    $notdeletemsg = "INSERT INTO notification(memberid, msg, date) VALUES ('$cmem','$delmsg','$heta')";
+        
+                    $notdeletemsgquery = mysqli_query($mysqli, $notdeletemsg);
+        
+                    //notification entered.
+
+      if($delquery==true && $notdeletemsgquery==true)
       {
         $reqty ="UPDATE addbook SET quantity = quantity +1 WHERE book_id='$cbook'";
 
