@@ -6,7 +6,11 @@ $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_er
 $bid ='';
 $title = '';
 $author = '';
+$isbn= '';
+$publisher= '';
+$pages= '';
 $quan= '';
+
 
 
 //EDIT SECTION
@@ -28,7 +32,11 @@ if( isset($_GET['edit']))
       $bid = $row['book_id'];
       $title = $row['title'];
       $author = $row['author'];
+      $isbn= $row['isbn'];
+      $publisher= $row['publisher'];
+      $pages= $row['pages'];
       $quan = $row['quantity'];
+      
 
    }
    else
@@ -153,9 +161,16 @@ if( isset($_GET['edit']))
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -168,7 +183,9 @@ if( isset($_GET['edit']))
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
-      
+            <!--main content start-->
+        <section id="main-content">
+        <section class="wrapper">
       <!----------Show ALert Message------------>
               <section id="lms">         
                  <div class="container"> 
@@ -235,6 +252,30 @@ if( isset($_GET['edit']))
                                     
                                    </select>
 								</div>
+            </div>
+            
+            <div class="form-group">
+							<label>ISBN Number</label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-list-ol"></i></span>
+									<input type="text" class="form-control" value="<?php echo $isbn; ?>" name="isbn"  placeholder="Enter ISBN Number" required/>
+								</div>
+            </div>
+            
+            <div class="form-group">
+							<label>Publisher</label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-upload"></i></span>
+									<input type="text" class="form-control" value="<?php echo $publisher; ?>" name="publisher" placeholder="Enter Book Publisher" required/>
+								</div>
+            </div>
+            
+            <div class="form-group">
+							<label>Book Pages</label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-file"></i></span>
+									<input type="number" class="form-control" value="<?php echo $pages; ?>" name="pages" placeholder="Enter Book Pages" required/>
+								</div>
 						</div>
 
 						<div class="form-group">
@@ -295,7 +336,10 @@ if( isset($_GET['edit']))
           
 				</div><!--main-center"-->
 			</div><!--main-->
-		</div><!--container-->
+    </div><!--container-->
+    
+        </section>
+        </section>
 
       
        

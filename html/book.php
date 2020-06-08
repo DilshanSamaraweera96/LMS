@@ -24,6 +24,29 @@ session_start();
 </head>
 <body>
 
+<!-- toast alert when logged out -->
+<?php
+if(isset($_GET['login']))
+{
+echo'    <div class="toast" id="myToast" style="position: absolute; top: 80px; right: 0; width: 300px; text-align: center; background: #ffa366; color:#ffffcc;">
+<div class="toast-header" style="background: #ff751a; color:#ffffcc;">
+    <div class="mr-auto"><i class="fa fa-grav"></i> Log In!</div>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="toast-body">
+    <div>You Should Login First!</a></div>
+</div>
+</div>';
+echo'<script>    
+    if(typeof window.history.pushState == "function") {
+        window.history.pushState({}, "Hide", "index.php");
+    }
+</script>';
+}
+?>
+
     <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -73,12 +96,65 @@ session_start();
      <div class="row"><div class="col-md-12"><h2>Search Book</h2></div></div>
            <div class="d-flex justify-content-center">
         <div class="searchbar">
-          <input class="search_input" type="text" name="" placeholder="Search Book...">
-          <a href="#" class="search_icon"><i class="fa fa-search"></i></a>
+          <input class="search_input" type="text" id="name" placeholder="Search Book..." required>
+          <button id="submit" class="search_icon" onclick="javascript:window.location='book.php?name='+document.getElementById('name').value"><i class="fa fa-search"></i></button>
+          
         </div>
       </div> 
     </div>
+
+    <?php
+
+// Instantiate DB & connect
+$mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
+
+if(isset($_GET['name']))
+{
+
+   $name = $_GET['name'];
+
+   $search = "SELECT * FROM addbook WHERE title LIKE '%$name%'";
+
+   $squery = mysqli_query($mysqli,$search);
+
+   $book_rows= mysqli_num_rows($squery);
+
+   if($book_rows > 0)
+   {
+
+    echo '<center><div class="d-flex justify-content-center" id="bookcard">';
+   
+      //fetch cover images from database  
+      while ($ser = mysqli_fetch_array($squery)) 
+      {
+      
+      echo "<a href='view.php?rownum=".$ser['book_id']."'>";
+      echo "<img src='../Admin/upload/".$ser['cover']."'>";
+      echo "</a>";
+      
+   } 
+   echo'</center></div>';
+  
+   }
+   else
+   {
+       echo ' <center><font color="#ffff99"><h3><i class="fa fa-certificate"></i> &nbsp;Book Not Found!</h3></font></center>';
+   }
+}
+
+?>
+<script>    
+    if(typeof window.history.pushState == 'function') {
+        window.history.pushState({}, "Hide", "book.php");
+    }
+</script>
     </section>
+   
+
+
+    </div>
+    <!-- --> 
+   
 
 <!---Book Categories--->
 
@@ -498,6 +574,13 @@ $result_other = mysqli_query($mysqli, $sql_other);
      <script src="../js/aos.js"></script>
      <script src="../js/smoothscroll.js"></script>
      <script src="../js/custom.js"></script>
+    
+     <script>
+$(document).ready(function(){
+        $("#myToast").toast({ delay: 4000 });
+        $("#myToast").toast('show');
+    }); 
+</script>
 
 </body>
 </html>

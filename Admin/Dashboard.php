@@ -1,14 +1,16 @@
+<?php require_once 'Html/news.php'?> 
+<?php require_once 'Html/newscancel.php'?> 
 <?php  
  // Instantiate DB & connect
  $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
 ?>
 <?php
-session_start();
-if(!isset($_SESSION['LoggedInUserId']))
+if(!isset($_SESSION['LoggedUser']))
 {
   header("location:adminlog.html");
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -30,8 +32,14 @@ if(!isset($_SESSION['LoggedInUserId']))
   <!-- Custom styles for this template -->
   <link href="css/dashboard.css" rel="stylesheet">
   <link href="css/style-responsive.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/javascript-calendar.css" type="text/css">
   <script src="lib/chart-master/Chart.js"></script>
   <script src="lib/jquery/jquery.min.js"></script>
+    <!------Data Tables--------------->
+    <script src="lib/jquery/jquery.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
+  <script src="../js/dataTables.bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
 
 </head>
 
@@ -125,9 +133,16 @@ if(!isset($_SESSION['LoggedInUserId']))
               </a>
           </li>
           <li>
-            <a href="Html/contact.php">
+          <a href="Html/contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="Html/chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -144,12 +159,16 @@ if(!isset($_SESSION['LoggedInUserId']))
     <section id="main-content">
       <section class="wrapper">
         <div class="row">
-            <h1><b><font color="#bf4040">WELCOME </font><font color="#ac7339"> ADMIN</font></b></h1>
-          </div> 
+            <h1><b><font color="#fff">WELCOME </font><font color="#48cfad"> ADMIN</font></b></h1>
+          </div>
+          <!----------------------Adding auto cancel uncollected books  -->
+          <?php include 'autoassign.php';?>
+          <?php require_once 'returnnotification.php';?>
+         
          
     <div id="projectFacts" class="sectionClass">
     
-    <h2><b><font color="#5c5c3d">Summary</font></b></h2>
+    <h2><b><font color="#48cfad">Statistics</font></b></h2>
     
     <div class="fullWidth">
         <div class="projectFactsWrap ">
@@ -237,193 +256,155 @@ if(!isset($_SESSION['LoggedInUserId']))
         </div>
     </div>
 </div> 
-         
-          <h3>Let's Get Started..!</h3>
-          <div class="sentence">
-             <p>1.You can check Available books.<br></p>
-             <p>2.You can Add new books & remove books if you want.<br></p>
-             <p>3.You can accept or reject member's book orders.<br></p>
-             <p>4.You can add penalty for late book submission.<br></p>
-             <p>6.You can search any book or any member or any record using search options.<br></p>
-             <p>6.You can check member details and remove.<br></p>
-             <p>7.You can check user's messages<br></p>
-          
-          </div>
-
-
-
-    <!--------------------------- AUTO PROCESS RESERVE NOT COLLECT--------------------------------->
-    <?php
     
-    
-    $getcollect = "SELECT * from issuebook where returndate IS NULL AND issuedate IS NOT NULL";
+<!--------------------------------------------------------------------- News ----------------------------------------------------------------->
+     <section class="contact section" id="news">
+     <div class="container">
+                            
+      <div class="row">
 
-    $collectquery = mysqli_query($mysqli,$getcollect);
+          <div class="col-md-6 col-12">
+          <h2>News</h2>
+
+            <!-- ALERT -->
+            <?php
+           if (isset($_SESSION['news']))
+           { 
+                         echo'<div class="alert ';echo ($_SESSION['ntype']) ;echo '" role="alert">
+                          <center>';?>  <?php echo ($_SESSION['news']) ;?>
+                          <?php unset ($_SESSION['news']); ?> <?php echo '</center></div>';
+
+           }?>
 
 
-    while(!empty($colectres = mysqli_fetch_assoc($collectquery)))
-    {
-       
-    $cdate = $colectres['collectdate'];
-    $today = date('Y-m-d');
+                    <p><font color=red><i class="fa fa-file"></i> </font>Upload recent news in here.</p>
+                        
 
-    //convert string to object
-    $coldate = new DateTime($cdate);
-    $ada = new DateTime($today);
+                        <form action="Html/news.php" method="post" class="contact-form webform" enctype="multipart/form-data">
+                            
 
-    // calculates the difference between DateTime objects 
-    $interval = date_diff($ada,$coldate);
+                            <input type="text" class="form-control" name="topic" placeholder="Topic" required>
 
-    // printing result in days format 
-     $x=$interval->format('%R%a');
-    
-    //auto process
-    if($x>=0)
-    {
-      //if difference > =0 CONTINUE normal process
-    }
-    else
-    {
-      //IF <0 EXCUTE AUTO PROCESS
-      $cmem = $colectres['memberid'];
-      $cbook = $colectres['bookid'];
+                            <textarea class="form-control" rows="5" name="msg" placeholder="Message" required></textarea>
 
-              //Check avalibility of pending request
+                            <input type="file" class="form-control" name="cover" required>
 
-              $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$cbook'";
+                            <button type="submit" class="form-control" id="submit-button" name="newssubmit">Upload</button>
+                        </form>
+            </div>
 
-              $penr = mysqli_query($mysqli,$pen);
-      
-              $penc = mysqli_fetch_assoc($penr);
-      
-              $p = $penc['memberid'];
-      
-      
-             //check quantity is 0
-      
-              $chkqty = "SELECT quantity FROM addbook WHERE book_id='$cbook'";
-      
-              $chkres = mysqli_query($mysqli, $chkqty);
-      
-              $chkchk = mysqli_fetch_assoc($chkres);
-      
-              $c= $chkchk['quantity'];
-      
-      
-              //issue dates to pending reservations
-      
-              if($c==0 && !empty($p))
-              {
-                  $currentdate = date('Y-m-d');
-                  $collectdate = date('Y-m-d', strtotime($currentdate.'+3 days'));
-      
-                  $assign = "UPDATE issuebook SET issuedate='$currentdate', collectdate='$collectdate' WHERE memberid='$p'";
-      
-                  $assignr = mysqli_query($mysqli, $assign);
-      
-                  //reduce quantity
-      
-                  if($assignr == true)
-                  {    
-                      $reqty ="UPDATE addbook SET quantity = quantity -1 WHERE book_id='$cbook'";
-      
-                      $reqtyr = mysqli_query($mysqli, $reqty);
-
-                                //SET NOTIFICATION 
-
-                                $adasaduda = date('Y-m-d H:i:s');
-
-                                //Get msg into variable
+           <div id="calendar" class="col-md-6 col-12 ">
+                    <h4 class="cal"><font color=#339933>Calendar</font></h4>
                     
-                                $gtmsg= "SELECT msg FROM notification WHERE msgid=4";
-                    
-                                $colmsg = mysqli_query($mysqli,$gtmsg);
-                    
-                                $colmsgcheck = mysqli_fetch_assoc($colmsg);
-                    
-                                $msg = $colmsgcheck['msg'];
-                    
-                    
-                    
-                                $not = "INSERT INTO notification(memberid, msg, date) VALUES ('$p','$msg','$adasaduda')";
-                    
-                                $notquery = mysqli_query($mysqli, $not);
-                    
-                                //notification entered.
-      
-                      if($reqtyr == true && $notquery==true)
-                      {
-      
-                        echo'<div class="alert alert-success" role="alert"><center><b>Book AUTOMATICALLY Assigned to Pending Reservations!</center></b></div>';
-      
-      
-                      }
-                      else
-                      {
-      
-                        echo'<div class="alert alert-danger" role="alert"><center><b>Error!</center></b></div>';
-      
-                      }
-      
+                    <div class="icalendar">
+                    <div class="icalendar__month">
+                    <div class="icalendar__prev" onclick="moveDate('prev')">
+                    <span>&#10094</span>
+                    </div>
+                    <div class="icalendar__current-date">
+                            <h2 id="icalendarMonth"></h2>
+                            <div>
+                                <div id="icalendarDateStr"></div>
+                            </div>
+
+                        </div>
+                        <div class="icalendar__next" onclick="moveDate('next')">
+                            <span>&#10095</span>
+                        </div>
+                    </div>
+                    <div class="icalendar__week-days">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div class="icalendar__days"></div>
+                    </div>
+                
+             </div>
+
+
+            </div>
+
+              <!-- News table -->
+
+                   <h3 align="center">News Table</h3>  
+
+                               <!-- ALERT -->
+                               <?php
+                                if (isset($_GET['delnews']))
+                                { 
+                                echo'<div class="alert alert-danger" role="alert"><center><b>Record Has Been Deleted!</center></b></div>';
+                                echo'<script>    
+                                if(typeof window.history.pushState == "function") {
+                                window.history.pushState({}, "Hide", "Dashboard.php#issue_data");
+                                }
+                                </script>';
+
+                                }?>
+               
+               <?php 
+
+                  $getnews = "SELECT * FROM booknews ORDER BY newsid DESC";
+                  $getnewsquery = mysqli_query($mysqli,$getnews);
+
+                  if($getnewsquery)
+                  {
+                      $newsrow = mysqli_num_rows($getnewsquery);
+                                      
+
+                    //insert data into issue table
+
+                    if($newsrow>0)
+                    {
+                      echo '<div class="table-responsive">  
+                            <table id="issue_data" class="table table-striped table-bordered">  
+                            <thead>  
+                            <tr>
+                                <td>News ID</td>    
+                                <td>Topic</td>  
+                                <td>Upload Date</td>  
+                                <td>Action</td>   
+                            </tr>  
+                            </thead> '; 
+                      
+                      while ($getnewsrow = mysqli_fetch_array($getnewsquery))  
+                      {  
+                          echo '  
+                          <tr>  
+                                <td>'.$getnewsrow["newsid"].'</td>
+                                <td>'.$getnewsrow["topic"].'</td>  
+                                <td>'.$getnewsrow["newsdate"].'</td>  
+                                <td><center><a id="collect" href="Html/newscancel.php?newsid='.$getnewsrow["newsid"].'" class="btn btn-danger">Remove</a></center></td>  
+                          </tr>  
+                          ';  
+                      }  
+                      
+                      echo '</table>  
+                      </div>';   
+                    }
+                    else
+                    {
+                      echo '<h6><i class="fa fa-certificate"></i> &nbsp;Doesnt have any data yet.</h6>';
+
+                    }
                   }
-              }
+                
 
-      //delete uncollect order
-
-      $delissue = "DELETE FROM issuebook WHERE memberid='$cmem' AND bookid='$cbook'";
-
-      $delquery = mysqli_query($mysqli, $delissue);
-
-                    //SET NOTIFICATION 
-
-                    $heta = date('Y-m-d H:i:s');
-
-                    //Get msg into variable
-        
-                    $delmsg= "SELECT msg FROM notification WHERE msgid=5";
-        
-                    $deletemsg = mysqli_query($mysqli,$delmsg);
-        
-                    $deletemsgcheck = mysqli_fetch_assoc($deletemsg);
-        
-                    $delmsg = $deletemsgcheck['msg'];
-        
-        
-        
-                    $notdeletemsg = "INSERT INTO notification(memberid, msg, date) VALUES ('$cmem','$delmsg','$heta')";
-        
-                    $notdeletemsgquery = mysqli_query($mysqli, $notdeletemsg);
-        
-                    //notification entered.
-
-      if($delquery==true && $notdeletemsgquery==true)
-      {
-        $reqty ="UPDATE addbook SET quantity = quantity +1 WHERE book_id='$cbook'";
-
-        $reqtyr = mysqli_query($mysqli, $reqty);
-
-        if($reqtyr == true)
-        {
-
-        echo'<div class="alert alert-danger" role="alert"><center><b>Reservation removed cuz didnt collect the book before due time</center></b></div>';
-
-
-        }
-        else
-        {
-
-          echo'<div class="alert alert-danger" role="alert"><center><b>Error!</center></b></div>';
-
-        }
-      }
-      //delete end
-
-    }
+                ?>
+                    
+        </div>
     
-    } 
-    ?>  
-      
-    <!----------------------------------------------------------------- AUTO PROCESS END---------------------------------------------------------- -->
+             
+</section>
+    
+
+
+
+
     
       </section>
     </section>
@@ -443,8 +424,9 @@ if(!isset($_SESSION['LoggedInUserId']))
   
   
   <!-- js placed at the end of the document so the pages load faster -->
-  <script src="lib/jquery/jquery.min.js"></script>
 
+
+  <script src="lib/javascript-calendar.js" type="text/javascript"></script>
   <script src="lib/bootstrap/js/bootstrap.min.js"></script>
   <script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
   <script src="lib/jquery.scrollTo.min.js"></script>
@@ -478,6 +460,42 @@ if(!isset($_SESSION['LoggedInUserId']))
     });
   </script>
   <script src="counter.js"></script>
+
+  <script>  
+ $(document).ready(function(){  
+      $('#issue_data').DataTable();  
+ });  
+ </script>
+
+ <!-- calendar -->
+ <script>
+try {
+  fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", { method: 'HEAD', mode: 'no-cors' })).then(function(response) {
+    return true;
+  }).catch(function(e) {
+    var carbonScript = document.createElement("script");
+    carbonScript.src = "//cdn.carbonads.com/carbon.js?serve=CK7DKKQU&placement=wwwjqueryscriptnet";
+    carbonScript.id = "_carbonads_js";
+    document.getElementById("carbon-block").appendChild(carbonScript);
+  });
+} catch (error) {
+  console.log(error);
+}
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 
 </body>
 

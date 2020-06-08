@@ -684,7 +684,8 @@
 }
 #noti
 {
-    background: #171819;
+    background: transparent;
+    left: -70px;
 }
 #noti a
 {
@@ -692,6 +693,8 @@
     background: #ffffb3;
     font-size: 11px;
     border-radius: 10px;
+    left: -40px;
+    position: relative;
 }
 #noti a:hover
 {
@@ -861,4 +864,208 @@
     transition: color 0.8s linear;
     transition: background 0.8s linear;
     border: 2px solid #8cc867;
+}
+
+
+/*----------------------------------Comments---------------------------*/
+
+
+.content-item {
+    padding:30px 0;
+	background-color:#FFFFFF;
+}
+
+
+.content-item h2 {
+	font-weight:700;
+	font-size:35px;
+	line-height:45px;
+	text-transform:uppercase;
+	margin:20px 0;
+}
+
+.content-item h3 {
+	font-weight:400;
+	font-size:20px;
+	color:#555555;
+	margin:10px 0 15px;
+	padding:0;
+}
+
+.content-headline {
+	height:1px;
+	text-align:center;
+	margin:20px 0 70px;
+}
+
+.content-headline h2 {
+	background-color:#FFFFFF;
+	display:inline-block;
+	margin:-20px auto 0;
+	padding:0 20px;
+}
+
+.grey .content-headline h2 {
+	background-color:#F0F0F0;
+}
+
+.content-headline h3 {
+	font-size:14px;
+	color:#AAAAAA;
+	display:block;
+}
+
+
+#comments {
+    box-shadow: 0 -1px 6px 1px rgba(0,0,0,0.1);
+	background-color:#FFFFFF;
+}
+
+#comments .img-cmtuser
+{
+    width: 100px;
+    height: 100px;
+}
+
+#comments .media {
+	border-top:1px dashed #DDDDDD;
+	padding:20px 0;
+	margin:0;
+}
+
+#comments .media > .pull-left {
+    margin-right:20px;
+}
+
+#comments .media img {
+	max-width:100px;
+}
+
+
+
+#comments .newcmt
+{
+   margin-left: 26px;
+    margin-bottom: 20px;
+}
+#comments .comment-form
+{
+   margin-top: -15px;
+   margin-left: 13px;
+
+}
+#comments .comment-form .form-control
+{
+    opacity: 0.5;
+    color: #fff;
+    background: #000;
+}
+#comments .comment-form .form-control:focus {
+    border: 3px solid #33ffff;
+    box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, .25);
+}
+
+#comments .media .media-heading
+{
+    font-weight: bold;
+}
+#comments .media .datecmt
+{
+    font-size: 16px;
+    color: #000;
+}
+#comments .media
+{
+    padding: 20px;
+}
+
+#comments .media:nth-child(even){
+  background-color: #ffffcc;
+  opacity: 0.8;
+}
+#comments .media:nth-child(odd){
+  background-color: #e6ffcc;
+     opacity: 0.8;
+}
+#comments
+{
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('../images/3.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+#comments .bottom-img
+{
+    width: 100%;
+    margin-top: -35px;
+}
+
+#comments .btn:hover
+{
+    background: #fff;
+    color: dodgerblue;
+    transition: all 0.8s;
+}
+
+/*------------------------------------*\
+	News Styles
+\*------------------------------------*/
+
+#news .pagination a{
+	float: left;
+	color: #666;
+	font-size:30px;
+	line-height:24px;
+	font-weight: normal;
+	text-align: center;
+	border: 1px solid #BBB;
+	width: 44px;
+    text-align: center;
+	padding: 10px;
+	margin: 10px 5px 0 0;
+	border-radius: 3px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+#news .pagination
+{
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+#news .pagination a:hover {
+	text-decoration: none;
+	background: #33ccff;
+    color: #fff;
+}
+
+/*------------------------------------*\
+	Comment pagination
+\*------------------------------------*/
+
+#comments .pagination a{
+	float: left;
+	color: #666;
+	font-size:15px;
+    padding: 5px;
+    width: 32px;
+	font-weight: normal;
+	text-align: center;
+	border: 1px solid #BBB;
+    background: #fff;
+    text-align: center;
+	margin: 10px 5px 0 0;
+	border-radius: 3px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+#comments .pagination
+{
+    justify-content: center;
+    margin-bottom: 100px;
+    margin-top: 50px;
+}
+
+#comments .pagination a:hover {
+	text-decoration: none;
+	background: #33ccff;
+    color: #fff;
 }

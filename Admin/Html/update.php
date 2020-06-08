@@ -19,15 +19,20 @@ $way = "../upload/".basename($_FILES['nimage']['name']);
 $title = $_POST['title'];
 $author = $_POST['author'];
 $category = $_POST['category'];
+$isbn = $_POST['isbn'];
+$publisher = $_POST['publisher'];
+$pages = $_POST['pages'];
 $quantity = $_POST['quantity'];
 $language = $_POST['language'];
 $cover = $_FILES['cover']['name'];
 $fimage = $_FILES['fimage']['name'];
 $nimage = $_FILES['nimage']['name'];
+
+$publisher = $mysqli->real_escape_string($publisher);
         
-$sql= "UPDATE addbook SET title='$title', author='$author', category='$category', quantity='$quantity', language='$language', cover='$cover', firstimage='$fimage', nextimage='$nimage' WHERE book_id='$id'";
+$sql= "UPDATE addbook SET title='$title', author='$author', category='$category', isbn='$isbn', publisher='$publisher', pages='$pages', quantity='$quantity', language='$language', cover='$cover', firstimage='$fimage', nextimage='$nimage' WHERE book_id='$id'";
 
-
+                                                                                
         $right = $mysqli->query($sql);
    
         if((move_uploaded_file($_FILES['cover']['tmp_name'], $target)) && (move_uploaded_file($_FILES['fimage']['tmp_name'], $aim)) && (move_uploaded_file($_FILES['nimage']['tmp_name'], $way)) && ($right==true))

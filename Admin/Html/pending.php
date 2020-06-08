@@ -17,7 +17,7 @@
  user_register u ON i.memberid = u.`mem-id`
  INNER JOIN
  addbook b ON i.bookid = b.book_id 
- WHERE i.issuedate IS NULL"; 
+ WHERE i.issuedate IS NULL ORDER BY i.issueid ASC"; 
 
 
 
@@ -149,9 +149,16 @@ $num_rows= mysqli_num_rows($book);
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>

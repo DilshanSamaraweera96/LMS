@@ -57,7 +57,7 @@
 
     $penright = $mysqli->query($pensql);
 
-    if($penrightt==true)
+    if($penright)
     {
       header("location:pendingmsg.html");
     }

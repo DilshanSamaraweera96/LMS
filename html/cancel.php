@@ -8,9 +8,77 @@ $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_er
 if( isset($_GET['book']))
 {
 
+
     
     $bookid = $_GET['book'];
     $memid= $_GET['mem'];
+
+            //Check avalibility of pending request
+
+            $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$bookid'";
+
+            $penr = mysqli_query($mysqli,$pen);
+    
+            $penc = mysqli_fetch_assoc($penr);
+    
+            $p = $penc['memberid'];
+    
+    
+           //check quantity is 0
+    
+    
+            $chkqty = "SELECT quantity FROM addbook WHERE book_id='$bookid'";
+    
+            $chkres = mysqli_query($mysqli, $chkqty);
+    
+            $chkchk = mysqli_fetch_assoc($chkres);
+    
+            $c= $chkchk['quantity'];
+    
+
+            //issue dates to pending reservations
+
+            if($c==0 && !empty($p))
+            {
+                $currentdate = date('Y-m-d');
+                $collectdate = date('Y-m-d', strtotime($currentdate.'+3 days'));
+    
+                $assign = "UPDATE issuebook SET issuedate='$currentdate', collectdate='$collectdate' WHERE memberid='$p'";
+    
+                $assignr = mysqli_query($mysqli, $assign);
+    
+                //reduce quantity
+    
+                if($assignr == true)
+                {    
+                    $reqty ="UPDATE addbook SET quantity = quantity -1 WHERE book_id='$bookid'";
+    
+                    $reqtyr = mysqli_query($mysqli, $reqty);
+    
+                                            //SET NOTIFICATION 
+    
+                                            $ada = date('Y-m-d H:i:s');
+    
+                                            //Get msg into variable
+                                
+                                            $gtmsg= "SELECT msg FROM notification WHERE msgid=4";
+                                
+                                            $colmsg = mysqli_query($mysqli,$gtmsg);
+                                
+                                            $colmsgcheck = mysqli_fetch_assoc($colmsg);
+                                
+                                            $msg = $colmsgcheck['msg'];
+                                
+                                
+                                
+                                            $not = "INSERT INTO notification(memberid, msg, date) VALUES ('$p','$msg','$ada')";
+                                
+                                            $notquery = mysqli_query($mysqli, $not);
+                                
+                                            //notification entered.
+    
+                }
+            }
     
 
     //update quantity by +1 

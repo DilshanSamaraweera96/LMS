@@ -2,9 +2,9 @@
 
 $mysqli = new mysqli('localhost' , 'root' , '12345' , 'sipsewana') or die(mysqli_error($mysqli)); 
  
-    if(isset($_POST['uploadbtn']))
+if(isset($_POST['uploadbtn']))
     
-    {
+{
 //image path to uploaded image
 $target = "../upload/".basename($_FILES['cover']['name']); 
 $aim = "../upload/".basename($_FILES['fimage']['name']); 
@@ -14,13 +14,19 @@ $way = "../upload/".basename($_FILES['nimage']['name']);
 $title = $_POST['title'];
 $author = $_POST['author'];
 $category = $_POST['category'];
+$isbn = $_POST['isbn'];
+$publisher = $_POST['publisher'];
+$pages = $_POST['pages'];
 $quantity = $_POST['quantity'];
 $language = $_POST['language'];
 $cover = $_FILES['cover']['name'];
 $fimage = $_FILES['fimage']['name'];
 $nimage = $_FILES['nimage']['name'];
+
+$publisher = $mysqli->real_escape_string($publisher);
+
         
-$sql= "INSERT INTO addbook(title, author, category, quantity, language, cover, firstimage, nextimage) VALUES ('$title','$author','$category','$quantity','$language','$cover','$fimage','$nimage')";
+ $sql= "INSERT INTO addbook(title, author, category, isbn, publisher, pages, quantity, language, cover, firstimage, nextimage) VALUES ('$title','$author','$category','$isbn','$publisher','$pages','$quantity','$language','$cover','$fimage','$nimage')";
 
 
         $right = $mysqli->query($sql);

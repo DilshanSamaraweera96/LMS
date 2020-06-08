@@ -17,13 +17,9 @@ if (isset($_POST['submit'])) {
     $row = mysqli_fetch_row($result);
     echo $row[0];
     if ($count == 1) {
-        $_SESSION['LoggedInUserId'] = $row[0];
-        
-        $_SESSION['id'] = $row[0];
+        $_SESSION['LoggedInUserId'] = $row[0];        
         $_SESSION['name'] = $row[1];
-        $_SESSION['add'] = $row[2];
-        $_SESSION['mail'] = $row[3];
-        $_SESSION['pno'] = $row[4];
+
             
         header("location:logsuccess.php");
     } else {

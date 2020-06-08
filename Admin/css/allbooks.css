@@ -754,7 +754,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 
 #lms
 {
-    background: #FFFFF7;
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),url('../images/bookbg.jpg');
     background-size: cover;
     padding-top: 20px;
     padding-bottom: 40px;
@@ -800,7 +800,6 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 
 .table-responsive{
     
-   margin-left: 30px;
    padding-top: 40px;
    
 }
@@ -825,6 +824,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 .table-striped>tbody>tr:nth-child(even)>th {
    background-color: #d9f2e5;
  }
+
+#issue
 /*footer*/
 .footer {
     background: #4ECDC4;

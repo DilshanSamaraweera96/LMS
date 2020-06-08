@@ -7,6 +7,13 @@
 <!------Adding collect.php------->
 <?php require_once 'cancel.php'; ?>
 
+<?php
+if(!isset($_SESSION['LoggedInUserId']))
+{
+  header("location:../index.php?login");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,7 +100,7 @@
                         <a class="nav-item nav-link" data-toggle="tab" href="#nav-return" role="tab" aria-controls="nav-return" aria-selected="false">Return Book</a>
                         <a class="nav-item nav-link " data-toggle="tab" href="#nav-pen" role="tab" aria-controls="nav-pen" aria-selected="true">Pending Reservations</a>
 						<a class="nav-item nav-link" data-toggle="tab" href="#nav-fine" role="tab" aria-controls="nav-fine" aria-selected="false">Fine Details</a>
-						<a class="nav-item nav-link" data-toggle="tab" href="#nav-message" role="tab" aria-controls="nav-message" aria-selected="false">Message Center</a>
+						
 						
 						
 					</div>
@@ -102,32 +109,52 @@
 				<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 					
 					<div class="tab-pane fade show active" id="nav-member" role="tabpanel" aria-labelledby="nav-member-tab">
-					
-					<div class="container">
+                    <div class="container">
 					<table class="table table-striped">
                     <tbody>
-                    <tr>
+
+                    <?php
+                    $userid =$_SESSION['LoggedInUserId'];
+
+                    //get account detials from member table
+                    $loginuser = "SELECT * FROM user_register WHERE `mem-id`='$userid'";
+                    $loginuserquery = mysqli_query($mysqli, $loginuser);
+
+                    if($loginuserquery)
+                    {
+                        $loginuserresult = mysqli_fetch_assoc($loginuserquery);
+
+                    echo '<tr>
                     <th><i class="fa fa-star"></i> &nbsp;Member ID</th>
-                    <td><?php echo $_SESSION['id']; ?></td>
+                    <td>'; echo $userid; echo'</td>
                     </tr>
                     <tr>
                       <th><i class="fa fa-star"></i> &nbsp;Full Name</th>
-                        <td><?php echo $_SESSION['name']; ?></td>
+                        <td>'; echo' '.$loginuserresult["fullname"].' </td>
            
                     </tr>
                     <tr>
                       <th><i class="fa fa-star"></i> &nbsp;Address</th>
-                        <td><?php echo $_SESSION['add']; ?></td>
+                        <td>'; echo' '.$loginuserresult["address"].' </td>
                     </tr>
                       <tr>
                       <th><i class="fa fa-star"></i> &nbsp;Email</th>
-          	            <td><?php echo $_SESSION['mail']; ?></td>
+          	            <td>'; echo' '.$loginuserresult["email"].' </td>
 
                         </tr>
                     <tr>
                     <th><i class="fa fa-star"></i> &nbsp;Phone Number</th>
-                    <td><?php echo $_SESSION['pno']; ?></td>
-                    </tr>
+                    <td>'; echo' '.$loginuserresult["phonenumber"].' </td>
+                    </tr>';
+                    }
+                    else
+                    {
+                        echo "CAN'T GET USER DETAILS";
+                    }
+
+
+					?>
+					                   
                     </tbody>
                     </table>
 					</div>	
@@ -139,7 +166,7 @@
                     <!-- issue details -->
                     <div class="tab-pane fade" id="nav-issue" role="tabpanel" aria-labelledby="nav-issue-tab">
                     <?php
-                     $userid =$_SESSION['id'];
+                     $userid =$_SESSION['LoggedInUserId'];
                      
                      $geti = "SELECT
                      i.memberid,
@@ -235,7 +262,7 @@
 
 
                     <?php
-                     $userid =$_SESSION['id'];
+                     $userid =$_SESSION['LoggedInUserId'];
                      
                      $getr = "SELECT
                      i.memberid,
@@ -322,7 +349,7 @@
 
 
                     <?php
-                     $userid =$_SESSION['id'];
+                     $userid =$_SESSION['LoggedInUserId'];
                      
                      $getpen = "SELECT
                      i.memberid,
@@ -415,7 +442,7 @@
 
 
                     <?php
-                     $userid =$_SESSION['id'];
+                     $userid =$_SESSION['LoggedInUserId'];
                      
                      $fine = "SELECT
                      i.memberid,
@@ -484,7 +511,8 @@
                     else
                     {
 
-                        echo'<h6><b><font color="#555"><i class="fa fa-certificate"></i> &nbsp;You Dont Have Any Payment To Pay For Fine!</font></b></h6>';
+                        echo'<h6><b><font color="#555" size="4px"><i class="fa fa-certificate"></i> &nbsp;You dont have any payment to pay for Fine!<br>
+                        <i class="fa fa-certificate"></i> &nbsp;If you dont return the book within due date,Rs.5 penalty added everyday until you returned the book.!</font></b></h6>';
 
                     }               
                     ?> 
@@ -494,9 +522,6 @@
 
 					</div>
 					
-					<div class="tab-pane fade" id="nav-message" role="tabpanel" aria-labelledby="nav-message-tab">
-
-					</div>
 					
 					
 				</div>

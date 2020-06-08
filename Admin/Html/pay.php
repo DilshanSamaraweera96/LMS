@@ -78,4 +78,31 @@ if( isset($_GET['mem'])){
 
 }
 
+if( isset($_GET['delmemid'])){
+
+    $delmemid = $_GET['delmemid'];
+ 
+    $delbookid = $_GET['delbook'];
+
+    $delmemp = "DELETE FROM issuebook WHERE memberid ='$delmemid' AND bookid='$delbookid'";
+
+    $delrightp = $mysqli->query($delmemp);
+
+    if($delrightp==true)
+    {
+        $_SESSION['dmsg'] = "Data Removed From The Table!";
+        $_SESSION['dtype'] = "alert-danger";
+
+        header("location:fine.php");
+
+        }
+    else
+        {
+            $_SESSION['dmsg'] = "ERROR!";
+            $_SESSION['dtype'] = "alert-danger";
+
+            header("location:fine.php");
+           
+        }
+}
 ?>

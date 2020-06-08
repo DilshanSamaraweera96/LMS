@@ -181,4 +181,33 @@ if( isset($_GET['return'])){
 
 }
 
+if( isset($_GET['delmemid'])){
+
+    $delmemid = $_GET['delmemid'];
+ 
+    $delbookid = $_GET['delbook'];
+
+    $delmemp = "DELETE FROM issuebook WHERE memberid ='$delmemid' AND bookid='$delbookid' AND fine IS NULL";
+
+    $delrightp = $mysqli->query($delmemp);
+
+    if($delrightp==true)
+    {
+        $_SESSION['dmsg'] = "Data Removed From The Table!";
+        $_SESSION['dtype'] = "alert-danger";
+
+        header("location:returnbooks.php");
+
+        }
+    else
+        {
+            $_SESSION['dmsg'] = "ERROR!";
+            $_SESSION['dtype'] = "alert-danger";
+
+            header("location:returnbooks.php");
+           
+        }
+
+}
+
 ?>

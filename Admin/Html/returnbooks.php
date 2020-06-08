@@ -8,7 +8,8 @@
  i.bookid,
  b.title,
  i.returndate,
- i.completedate
+ i.completedate,
+ i.fine
  
  FROM
  issuebook i
@@ -148,9 +149,16 @@ $num_rows= mysqli_num_rows($book);
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -169,7 +177,7 @@ $num_rows= mysqli_num_rows($book);
                               
                  <div class="container">  
 
-              <!----------Show ALert Message------------>
+              <!----------Show Return ALert Message------------>
               <?php
               if (isset($_SESSION['message']))
               { 
@@ -179,12 +187,24 @@ $num_rows= mysqli_num_rows($book);
 
               }?>
 
+              <!----------Show Auto Add Reservation ALert Message------------>
               <?php
               if (isset($_SESSION['msg']))
               { 
               echo'<div class="alert ';echo ($_SESSION['ptype']) ;echo '" role="alert">
                 <center>';?>  <?php echo ($_SESSION['msg']) ;?>
               <?php unset ($_SESSION['msg']); ?> <?php echo '</center></div>';
+
+              }?>
+
+              <!----------Show Delete ALert Message------------>
+
+              <?php
+              if (isset($_SESSION['dmsg']))
+              { 
+              echo'<div class="alert ';echo ($_SESSION['dtype']) ;echo '" role="alert">
+                <center>';?>  <?php echo ($_SESSION['dmsg']) ;?>
+              <?php unset ($_SESSION['dmsg']); ?> <?php echo '</center></div>';
 
               }?>
 
@@ -208,7 +228,8 @@ $num_rows= mysqli_num_rows($book);
                                     <td>Title</td>  
                                     <td>Due Return Date</td>
                                     <td>Book Returned Date</td>
-                                    <td>Return Status</td>  
+                                    <td>Return Status</td>
+                                    <td>Delete Status</td>   
                                 </tr>  
                                 </thead> '; 
                           
@@ -226,10 +247,21 @@ $num_rows= mysqli_num_rows($book);
                             if($row["completedate"] == null)
                             {
                                echo'     <td><center><a id="collect" href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-primary">Return</a></center></td>';
+                               
+                               echo' <td><center><a href="#"></a></center></td>';
+                               
                             }
                             else
                             {
                               echo' <td><center><a href="return.php?return='.$row["memberid"].'&book='.$row["bookid"].'" class="btn btn-warning">Returned</a></center></td> ';
+                              if($row["fine"] == null){
+                              echo' <td><center><a href="return.php?delmemid='.$row["memberid"].'&delbook='.$row["bookid"].'" class="btn btn-danger">Delete</a></center></td> ';
+                              }
+                              else
+                              {
+                                echo' <td><center><a href="fine.php" class="btn btn-primary">Pending Fine</a></center></td>';
+                              }
+                              
                             }        
                             echo'   </tr>  ';
                                  

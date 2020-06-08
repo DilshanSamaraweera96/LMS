@@ -1,6 +1,5 @@
 <?php
  session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -19,16 +18,87 @@
      <link rel="stylesheet" href="css/bootstrap.min.css">
      <link rel="stylesheet" href="css/font-awesome.min.css">
      <link rel="stylesheet" href="css/aos.css">
-
+     
      <!-- MAIN CSS -->
      <link rel="stylesheet" href="css/style.css">
 <!-- Start-->
 </head>
+
 <body>
+
+  
 
 
     <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg fixed-top">
+<!-- toast alert when logged out -->
+<?php
+if(isset($_GET['signout']))
+{
+echo'    <div class="toast" id="myToast" style="position: absolute; top: 80px; right: 0; width: 300px; text-align: center; background: #bf4040; color:#ffffcc;">
+<div class="toast-header" style="background: #ff3333; color:#ffffcc;">
+    <div class="mr-auto"><i class="fa fa-grav"></i> Log Out!</div>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="toast-body">
+    <div>You Have Been Logged Out!</a></div>
+</div>
+</div>';
+echo'<script>    
+    if(typeof window.history.pushState == "function") {
+        window.history.pushState({}, "Hide", "index.php");
+    }
+</script>';
+}
+?>
+<!-- toast alert when trying to go my account without logged in -->
+<?php
+if(isset($_GET['login']))
+{
+echo'    <div class="toast" id="myToast" style="position: absolute; top: 80px; right: 0; width: 300px; text-align: center; background: #ffa366; color:#ffffcc;">
+<div class="toast-header" style="background: #ff751a; color:#ffffcc;">
+    <div class="mr-auto"><i class="fa fa-grav"></i> Log In!</div>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="toast-body">
+    <div>You Should Login First!</a></div>
+</div>
+</div>';
+echo'<script>    
+    if(typeof window.history.pushState == "function") {
+        window.history.pushState({}, "Hide", "index.php");
+    }
+</script>';
+}
+?>
+
+<!-- toast alert when comment wrong -->
+<?php
+if(isset($_GET['comment']))
+{
+echo'    <div class="toast" id="myToast" style="position: absolute; top: 80px; right: 0; width: 300px; text-align: center; background: #bf4040; color:#ffffcc;">
+<div class="toast-header" style="background: #ff3333; color:#ffffcc;">
+    <div class="mr-auto"><i class="fa fa-grav"></i> Comment!</div>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="toast-body">
+    <div>Your Comment Didnt Recived!</a></div>
+</div>
+</div>';
+echo'<script>    
+    if(typeof window.history.pushState == "function") {
+        window.history.pushState({}, "Hide", "index.php");
+    }
+</script>';
+}
+?>
+
 
         <div class="container">
             
@@ -87,11 +157,11 @@
                     //connect db
                       $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli));
 
-                      $userid =$_SESSION['id'];
+                       $userid =$_SESSION['LoggedInUserId'];
                       
 
                       //get notfication
-                      $notif = "SELECT * FROM notification WHERE memberid = '$userid'";
+                      $notif = "SELECT * FROM notification WHERE memberid = '$userid' ORDER BY notid DESC";
                       $notifquery = mysqli_query($mysqli, $notif);
                       $nm_rows= mysqli_num_rows($notifquery);
                       
@@ -119,7 +189,7 @@
                           echo' <small>'; echo $notdate ; echo'</small><br>';
                             echo' '.$notifcheck["msg"].' </a>';
 
-                            echo' <div class="dropdown-divider"></div>';
+                           
                         
                         }
                       }
@@ -358,85 +428,192 @@
             <h2 data-aos="fade-up" data-aos-delay="200"> <font color="dodgerblue">Recent News</font></h2>
             <h6 data-aos="fade-up">get to know everything<font color=dodgerblue></font></h6> 
             </div>
-          <!-- News 1 -->  
-         <div class="row page">
+
+  <!-- get news data from table -->
+<?php
+
+  //connect db
+  $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli));
+ //create pagination
+     $limit = 3;  
+     if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };  
+     $start_from = ($page-1) * $limit;  
+ 
+  $getnews = "SELECT * FROM booknews ORDER BY newsid DESC LIMIT $start_from, $limit";
+  $getnewsquery = mysqli_query($mysqli,$getnews);
+
+  if($getnewsquery)
+  {
+  while($getresult = mysqli_fetch_assoc($getnewsquery))
+  {
+  
+    $newsdate= $getresult['newsdate'];
+
+    if($newsdate) {
+      $newsdate = date("F d, Y, g:i a", strtotime($newsdate));
+    } else {
+        $newsdate = '';
+    }
+
+
+  echo'  <div class="row page">
              
-                <div class="col-md-4 col-12 newscover" data-aos="fade-up" data-aos-delay="600">
-                 <img src="images/news/news1.png">
+    <div class="col-md-4 col-12 newscover" data-aos="fade-up" data-aos-delay="600">
+     <img src="Admin/Images/News/';echo''.$getresult["cover"].'">
 
-                </div>
+    </div>
 
-                <div class="col-md-7 col-12">
-                          <div class="letters">
+    <div class="col-md-7 col-12">
+              <div class="letters">
 
-                            <h2 class="mb-4 text-black" data-aos="fade-up" data-aos-delay="500">RWA retires RITA Awards, debuts the 'Vivian'</h2>
+                <h2 class="mb-4 text-black" data-aos="fade-up" data-aos-delay="500">';echo' '.$getresult["topic"].' </h2>
+                <p class="d-block" data-aos="fade-up" data-aos-delay="600"><font color="#404040"><b>';echo $newsdate; echo'</b></font> </p>
+                  <p class="d-block" data-aos="fade-up" data-aos-delay="600">';echo' '.$getresult["msg"].'</p>
+              </div>
+         </div>
+    </div>';
+  }
+  } 
+  else
+  {
+    echo "something happend!";
+  }
 
-                              <p class="d-block" data-aos="fade-up" data-aos-delay="600">The Romance Writers of America will permanently retire its annual RITA Awards, which it has presented annually since 1982, and introduce a new award, the Vivian, named after RWA founder Vivian Stephens.<br><br>
+  
+?>
+        
+         <!-- get news data from table end -->
 
-                              The move to retire the RITAs follows a controversy related to issues of diversity at the organization this winter that saw the resignation of its newly-instated president and its entire board of directors, as well as the cancellation of this year's planned RITA Awards ceremony. In January, the RWA announced that it planned to hold the RITAs again "to celebrate 2019 and 2020 romances" in 2021.</p>
-                          </div>
-                     </div>
-                </div>
+<!-- pagination show code -->
+<?php  
+$getnews = "SELECT COUNT(newsid) FROM booknews";  
+$getnewsquery = mysqli_query($mysqli,$getnews);  
+$newsrow = mysqli_fetch_row($getnewsquery);  
+$total_records = $newsrow[0];  
+$total_pages = ceil($total_records / $limit);  
+echo "<nav><ul class='pagination'>";  
+for ($i=1; $i<=$total_pages; $i++) {  
+             echo "<li><a href='index.php?page=".$i."#news'>".$i."</a></li>";  
+};  
+echo "</ul></nav>";   
+?>
+           
+</section>
+     
+     
+     
+<!--------------COMMENTS------------------->
+
+<section class="content-item" id="comments">
+       <img src="images/wavecmt.png" class="bottom-img">   
+        <div class="col-lg-12 col-12 text-center mb-5">
+       <h2 data-aos="fade-up" data-aos-delay="200"><font color="#ffff80">What's On Your Mind</font></h2>
+        <h6 data-aos="fade-up"><font color=#99ffff>Add a comment</font></h6>
+        </div>
+        
+    <div class="container">
+    	<div class="row">
+           
+      <?php if(isset($_SESSION['LoggedInUserId'])){
+
+         $userid =$_SESSION['LoggedInUserId'];
+          
+        echo ' <div class="newcmt">
+        <h6 data-aos="fade-up"><b><font color="#fff">New Comment</font></b></h6></div>
+           
+             
+        <div class="col-sm-12 comment-form"  data-aos="fade-up">
+               <form action="html/comment.php" method="post">
+               <input type="hidden" name="user" value="'.$userid.'">
+                <textarea class="form-control" rows="3" name="commsg" placeholder="Your message" required=""></textarea>
+                <button type="submit" class="btn btn-primary pull-right" name="comment">Comment</button>
+                </form>
+        </div>
+        
+        </div> ';
+      }
+      ?> 	
+                  
                 
-            <!-- News2 -->
-                 <div class="row page">
-             
-                <div class="col-md-4 col-12 newscover" data-aos="fade-up" data-aos-delay="600">
-                 <img src="images/news/news2.jpg">
-
-                </div>
-
-                <div class="col-md-7 col-12">
-                          <div class="letters">
-
-                            <h2 class="mb-4 text-black" data-aos="fade-up" data-aos-delay="500">The story behind ‘The Great Realisation,’ a post-pandemic bedtime tale</h2>
-
-                              <p class="d-block" data-aos="fade-up" data-aos-delay="600">Before the pandemic, Tomos Roberts read his poems to crowds around London who, he confesses, were often more interested in what they were drinking than what he was saying. Now, hunkered down and out of work, he’s found a far more attentive audience that stretches around the world — and includes people who haven’t yet reached drinking age.<br>
-                              Roberts’s poem, “The Great Realisation,” was released on YouTube on April 29 and has been viewed tens of millions of times. A simple rhyming tale read as a bedtime story, it takes on heavy themes — corporate greed, familial alienation, the pandemic — and somehow comes up with a happy ending. Set in an unspecified future, the poem looks back on pre-pandemic life and imagines a “great realisation” sparked by the scourge.</p>
-                          </div>
-                     </div>
-                </div>
                 
-                <!-- News3 -->
-                 <div class="row page">
-             
-                <div class="col-md-4 col-12 newscover" data-aos="fade-up" data-aos-delay="600">
-                 <img src="images/news/news3.jpg">
+      <div class="col-sm-12"> 
+        <?php
 
-                </div>
+     //create pagination
+     $climit = 5;  
+     if (isset($_GET["cpage"])) { $cpage  = $_GET["cpage"]; } else { $cpage=1; };  
+     $cstart_from = ($cpage-1) * $climit;  
 
-                <div class="col-md-7 col-12">
-                          <div class="letters">
+        //read comments in the db table
+        $readcmt = "SELECT *
+                    FROM comments
+                    ORDER BY comid DESC LIMIT $cstart_from, $climit";
 
-                            <h2 class="mb-4 text-black" data-aos="fade-up" data-aos-delay="500">Colson Whitehead: Black author makes Pulitzer Prize history</h2>
+        $readcmtresult = mysqli_query($mysqli, $readcmt);
 
-                              <p class="d-block" data-aos="fade-up" data-aos-delay="600">US author Colson Whitehead has become only the fourth writer ever to win the Pulitzer Prize for fiction twice.The African-American author was honored for The Nickel Boys, which chronicles the abuse of black boys at a juvenile reform school in Florida.<br>
-                              Whitehead, a 50-year-old New Yorker, won the 2017 prize in the same category for his book Underground Railroad. With one for each week, we’ll get to rank up our Rocket Pass 6 with a twist. The four modes to be introduced are Dropshot Rumble, Beach Ball, Boomer Ball, and Rocket League’s latest addition (and casualty), Heatseeker.Before him, only Booth Tarkington, William Faulkner and John Updike had won the Pulitzer for fiction twice.</p>
-                          </div>
-                     </div>
-                </div>
+        if($readcmtresult)
+        {
+
+          $totcmt = "SELECT COUNT(comid) FROM comments";  
+          $totres = mysqli_query($mysqli, $totcmt); 
+          $totrun = mysqli_fetch_row($totres);
+          $totalcmt = $totrun[0]; 
+                  
+            echo'<h3><b><font color="#b3ffb3"  data-aos="fade-up">'.$totalcmt.' Comments</font></b></h3>';
+                  
+            // COMMENT - START -->
+          
+          while($readcmtcheck = mysqli_fetch_assoc($readcmtresult))
+          {
+            $cmtdate= $readcmtcheck['comdate'];
+
+            if($cmtdate) 
+            {
+              $cmtdate = date("F d, Y, g:i a", strtotime($cmtdate));
+            } 
+            else 
+            {
+                $cmtdate = '';
+            }
+            
+            
+               echo'  <div class="media"  data-aos="fade-up">
+                      <img class="media-object pull-left" src="images/comment.png" alt="">
+                      <div class="media-body">
+                          <h4 class="media-heading" style="text-transform:capitalize;">'.$readcmtcheck["member"].'</h4>
+                          <p>'.$readcmtcheck["comment"].'</p>
+                          <p class="datecmt"><i class="fa fa-calendar"></i> &nbsp; '.$cmtdate.'</p>               
+                      </div>
+                  </div>';
+          }
+        }
+        else
+        {
+          echo "error";
+        }
+                // COMMENT  - END --> ?>
+
+
+
                 
-                
-                  <!-- News4 -->
-                 <div class="row page">
-             
-                <div class="col-md-4 col-12 newscover" data-aos="fade-up" data-aos-delay="600">
-                 <img src="images/news/news4.jpg">
-
-                </div>
-
-                <div class="col-md-7 col-12">
-                          <div class="letters">
-
-                            <h2 class="mb-4 text-black" data-aos="fade-up" data-aos-delay="500">Marvel Comics AUGUST 2020 Solicitations Cover Gallery</h2>
-
-                              <p class="d-block" data-aos="fade-up" data-aos-delay="600">Marvel Comics has released its August 2020 solicitations, largely pieced together from titles that were not released in April and May along with titles that were rescheduled from June and July due to comic book distribution interruptions stemming from coronavirus.<br>
-                              Almost 30 years after the landmark story Future Imperfect, legendary INCREDIBLE HULK scribe Peter David returns to the far-future version of the Hulk known as Maestro — the master of what remains of the world. With astounding art from HULK veteran Dale Keown and up-and-comer Germán Peralta, Maestro will answer questions that have haunted Hulk fans for years — and inspire some new ones.</p>
-                          </div>
-                     </div>
-                </div>
-             
-     </section>
+            </div>
+        </div>
+    </div>
+                   <?php
+                    //pagination show code -->
+                  
+                    $readcmt = "SELECT COUNT(comid) FROM comments";  
+                    $readcmtresult = mysqli_query($mysqli, $readcmt); 
+                    $readcmtcheck = mysqli_fetch_row($readcmtresult);  
+                    $ctotal_records = $readcmtcheck[0];  
+                    $ctotal_pages = ceil($ctotal_records / $climit);  
+                    echo "<nav><ul class='pagination'>";  
+                    for ($i=1; $i<=$ctotal_pages; $i++) {  
+                                 echo "<li><a href='index.php?cpage=".$i."#comments'>".$i."</a></li>";  
+                    };  
+                    echo "</ul></nav>";   
+                    ?>
+</section>
 
 <!-- Footer -->
         <footer>
@@ -566,6 +743,16 @@
      <script src="js/aos.js"></script>
      <script src="js/smoothscroll.js"></script>
      <script src="js/custom.js"></script>
+
+ <!-- toast js code -->
+ <script>
+$(document).ready(function(){
+        $("#myToast").toast({ delay: 3500 });
+        $("#myToast").toast('show');
+    }); 
+</script>
+
+
 
 </body>
 </html>

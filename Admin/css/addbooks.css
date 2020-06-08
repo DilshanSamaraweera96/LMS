@@ -4,7 +4,7 @@
 
 /* BASIC THEME CONFIGURATION */
 body {
-    color: #ffff99;
+     background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),url('../images/bookbg.jpg');
     background-size: cover;
     font-family: 'Ruda', sans-serif;
     min-height: 100vh;
@@ -762,7 +762,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
  	margin: 0 auto;
  	max-width: 700px;
     padding: 10px 40px;
-	background:#6699cc;
+	background: #008080;
+    opacity: 0.8;
 	    color: #FFF;
     text-shadow: none;
 

@@ -32,46 +32,46 @@ session_start();
 
 
 <div id="ui">
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
-  <div class="text">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
+  <div class="text" style="text-transform:capitalize;">Welcome <?php echo $_SESSION['name']; ?></div>
 </div>
  
 

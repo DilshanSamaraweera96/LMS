@@ -1,3 +1,10 @@
+<?php require_once 'admincomment.php';?>
+<?php  
+ // Instantiate DB & connect
+ $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
+?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -110,9 +117,16 @@
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -126,12 +140,126 @@
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
     <!--main content start-->
-             <p>1.You can check Available Doctors.<br></p>
-             <p>2.You can Add new doctors & remove doctors if you want.<br></p>
-             <p>3.You can add manually patient appoinments.<br></p>
-             <p>4.You can remove appoinments.<br></p>
-             <p>5.You can check user's messages & remove them.<br></p>
+      <section id="main-content">
+      <section class="wrapper">
+<!--------------COMMENTS------------------->
+
+            <!-- ALERT -->
+            <?php
+           if (isset($_SESSION['cmsg']))
+           { 
+                         echo'<div class="alert ';echo ($_SESSION['ctype']) ;echo '" role="alert">
+                          <center>';?>  <?php echo ($_SESSION['cmsg']) ;?>
+                          <?php unset ($_SESSION['cmsg']); ?> <?php echo '</center></div>';
+
+           }?>
+
+<section class="content-item" id="comments">
+        <div class="col-lg-12 col-12 text-center mb-5">
+       <h2 data-aos="fade-up" data-aos-delay="200"><font color="#ffff80">Read The Comments You Got</font></h2>
+        <h6 data-aos="fade-up"><font color=#99ffff>Add a comment</font></h6>
+        </div>
+        
+        <div class="container">
+    	<div class="row">
+           
+        <div class="newcmt">
+        <h6 data-aos="fade-up"><b><font color="#fff" size="4px">New Comment</font></b></h6></div>
+           
+             
+        <div class="col-sm-12 comment-form"  data-aos="fade-up">
+               <form action="admincomment.php" method="post">
+               <input type="hidden" name="user" value="ADMIN">
+                <textarea class="form-control" rows="3" name="commsg" placeholder="Your message" required=""></textarea>
+                <button type="submit" class="btn btn-primary pull-right" name="comment">Comment</button>
+                </form>
+        </div>
+        
+        </div> 
+	
+                  
+                
+                
+      <div class="col-sm-12"> 
+     <?php
+
+     //create pagination
+     $climit = 5;  
+     if (isset($_GET["cpage"])) { $cpage  = $_GET["cpage"]; } else { $cpage=1; };  
+     $cstart_from = ($cpage-1) * $climit;  
+
+        //read comments in the db table
+        $readcmt = "SELECT * FROM comments ORDER BY comid DESC LIMIT $cstart_from, $climit";
+
+        $readcmtresult = mysqli_query($mysqli, $readcmt);
+
+        if($readcmtresult)
+        {
+          $totcmt = "SELECT COUNT(comid) FROM comments";  
+          $totres = mysqli_query($mysqli, $totcmt); 
+          $totrun = mysqli_fetch_row($totres);
+          $totalcmt = $totrun[0]; 
+
+            
+                  
+            echo'<h3><b><font color="#b3ffb3"  size="6px" data-aos="fade-up">'.$totalcmt.' Comments</font></b></h3>';
+                  
+            // COMMENT - START -->
+          
+          while($readcmtcheck = mysqli_fetch_assoc($readcmtresult))
+          {
+            $cmtdate= $readcmtcheck['comdate'];
+
+            if($cmtdate) 
+            {
+              $cmtdate = date("F d, Y, g:i a", strtotime($cmtdate));
+            } 
+            else 
+            {
+                $cmtdate = '';
+            }
+            
+            
+               echo'  <div class="media"  data-aos="fade-up">
+                      <img class="media-object pull-left" src="../../images/comment.png" alt="">
+                      <div class="media-body">
+                          <h4 class="media-heading">'.$readcmtcheck["member"].'</h4>
+                          <p>'.$readcmtcheck["comment"].'</p>
+                          <p class="datecmt"><i class="fa fa-calendar"></i> &nbsp; '.$cmtdate.'</p>               
+                      </div>
+                  </div>';
+          }
+        }
+        else
+        {
+          echo "error";
+        }
+                // COMMENT  - END --> ?>
+
+
+
+                
+            </div>
+        
+                   <?php
+                    //pagination show code -->
+                  
+                    $readcmt = "SELECT COUNT(comid) FROM comments";  
+                    $readcmtresult = mysqli_query($mysqli, $readcmt); 
+                    $readcmtcheck = mysqli_fetch_row($readcmtresult);  
+                    $ctotal_records = $readcmtcheck[0];  
+                    $ctotal_pages = ceil($ctotal_records / $climit);  
+                    echo "<nav><ul class='pagination'>";  
+                    for ($i=1; $i<=$ctotal_pages; $i++) {  
+                                 echo "<li><a href='contact.php?cpage=".$i."#comments'>".$i."</a></li>";  
+                    };  
+                    echo "</ul></nav>";   
+                    ?>
+            </div>
+</section>
     <!--main content end-->
+      </section>
+      </section>
 
       
        

@@ -1,50 +1,3 @@
-<?php  
- // Instantiate DB & connect
- $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli)); 
-
- //get returndate and completedate into a variable
-
- $getday= "SELECT * FROM issuebook WHERE returndate AND completedate IS NOT NULL";
-
- $dayright = $mysqli->query($getday);
-
- while($daycheck = mysqli_fetch_assoc($dayright))
-{
-
-$rdate = $daycheck['returndate'];
-
-$cdate = $daycheck['completedate'];
-
-    //convert string to object
-    $coldate = new DateTime($cdate);
-    $roldate = new DateTime($rdate);
-
-    // calculates the difference between DateTime objects 
-    $interval = date_diff($roldate,$coldate);
-
-    // printing result in days format 
-     $x=$interval->format('%R%a');
-    
-    //auto process
-    if($x>=0)
-    {
-      //if difference > =0 CONTINUE normal process
-      $penalty = $x * 10;
-      
-    //update issue table with added penalty
-    $upfine = "UPDATE issuebook SET fine ='$penalty' WHERE returndate='$rdate' AND completedate='$cdate'";
-
-    $sex = mysqli_query($mysqli,$upfine);
-    }
-    else
-    {
-      //nothing happens if not exceed returndate
-     
-    }
-}
- ?>
-
-
 
 <?php  
  // Instantiate DB & connect
@@ -197,9 +150,16 @@ $num_rows= mysqli_num_rows($book);
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -215,6 +175,8 @@ $num_rows= mysqli_num_rows($book);
         
         <section id="lms">
 
+        <?php include 'dailyfine.php';?>
+
                               
                  <div class="container">  
 
@@ -225,8 +187,17 @@ $num_rows= mysqli_num_rows($book);
               echo'<div class="alert ';echo ($_SESSION['type']) ;echo '" role="alert">
                 <center>';?>  <?php echo ($_SESSION['message']) ;?>
               <?php unset ($_SESSION['message']); ?> <?php echo '</center></div>';
-
               }?>
+
+
+              <!----------Show Delete ALert Message------------>
+
+              <?php
+              if (isset($_SESSION['dmsg']))
+              { 
+              echo'<div class="alert ';echo ($_SESSION['dtype']) ;echo '" role="alert">
+                <center>';?>  <?php echo ($_SESSION['dmsg']) ;?>
+              <?php unset ($_SESSION['dmsg']); ?> <?php echo '</center></div>';}?>
 
               
                 <h3 align="center">Book Returning Details</h3>  
@@ -249,7 +220,9 @@ $num_rows= mysqli_num_rows($book);
                                     <td>Due Return Date</td>
                                     <td>Book Returned Date</td>
                                     <td>Penalty</td>
-                                    <td>Payment</td>  
+                                    <td>Payment</td>
+                                    <td>Delete</td>
+
                                 </tr>  
                                 </thead> '; 
                           
@@ -263,15 +236,28 @@ $num_rows= mysqli_num_rows($book);
                                     <td>'.$row["title"].'</td>  
                                     <td>'.$row["returndate"].'</td>
                                     <td>'.$row["completedate"].'</td>
-                                    <td>'.$row["fine"].'</td>';
+                                    <td>Rs.'.$row["fine"].'</td>';
                                 
                                     if($row["payday"] == null)
                                     {
-                                       echo'<td><center><a href="pay.php?mem='.$row["memberid"].'&book='.$row["bookid"].'&pay='.$row["fine"].'" class="btn btn-primary">Pay</a></center></td>';
+                                      
+                                     
+                                      if($row["completedate"]==null)
+                                      {
+                                        echo' <td><center><a href="#"></a></center></td>';
                                       }
+                                      else
+                                      {
+                                        echo'<td><center><a href="pay.php?mem='.$row["memberid"].'&book='.$row["bookid"].'&pay='.$row["fine"].'" class="btn btn-primary">Pay</a></center></td>';
+
+                                      }
+                                      echo' <td><center><a href="#"></a></center></td>';
+                        
+                                    }
                                     else
                                       {
                                         echo' <td><center><a href="pay.php?mem='.$row["memberid"].'&book='.$row["bookid"].'&pay='.$row["fine"].'" class="btn btn-warning">Paid</a></center></td> ';
+                                        echo' <td><center><a href="pay.php?delmemid='.$row["memberid"].'&delbook='.$row["bookid"].'" class="btn btn-danger">Delete</a></center></td> ';
                                       }        
                                       echo'   </tr>  '; 
                                

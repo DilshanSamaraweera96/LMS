@@ -132,9 +132,16 @@ $right = $mysqli->query($query);
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -147,6 +154,10 @@ $right = $mysqli->query($query);
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
+        <!--main content start-->
+      <section id="main-content">
+      <section class="wrapper">
+        
         <section id="lms">
 
                               
@@ -165,23 +176,24 @@ $right = $mysqli->query($query);
 
 
 
-                <h3 align="center">Book Details</h3>  
+                <h3 align="center"><font color="#fff">Book Details</font></h3>  
                 <br /> 
                 <!---------insert data into RETURN table------------>
 
                 <div class="table-responsive">  
-                  <table id="issue_data" class="table table-striped table-bordered">  
+                  <table id="issue_data" class="table table-striped table-bordered" border=1>  
                   <thead>  
-                  <tr>	
+                  <tr>
+                      <td>Book Cover</td>	
                       <td>Book ID</td>  
                       <td>Title</td>  
                       <td>Author</td>  
-                      <td>Category</td>  
+                      <td>Category</td>
+                      <td>ISBNNumber</td>
+                      <td>Publisher</td>
+                      <td>Pages</td>  
                       <td>Quantity</td>
                       <td>Language</td>
-                      <td>Book Cover</td>
-                      <td>First Preview</td>
-                      <td>Next Preview</td>
                       <td>Edit</td>
                       <td>Delete</td>    
                   </tr>  
@@ -190,16 +202,17 @@ $right = $mysqli->query($query);
                           while ($row = mysqli_fetch_array($book))  
                           {  
                                echo '  
-                               <tr>  
+                               <tr>
+                                    <td><img src="../upload/'.$row["cover"].'" width="83" height="100"></td>  
                                     <td>'.$row["book_id"].'</td>  
                                     <td>'.$row["title"].'</td>  
                                     <td>'.$row["author"].'</td>  
-                                    <td>'.$row["category"].'</td>  
+                                    <td>'.$row["category"].'</td>
+                                    <td>'.$row["isbn"].'</td>
+                                    <td>'.$row["publisher"].'</td>
+                                    <td>'.$row["pages"].'</td>  
                                     <td>'.$row["quantity"].'</td>
                                     <td>'.$row["language"].'</td>
-                                    <td>'.$row["cover"].'</td>
-                                    <td>'.$row["firstimage"].'</td>
-                                    <td>'.$row["nextimage"].'</td>
                                     <td><center><a href="updatebooks.php?edit='.$row["book_id"].'" class="btn btn-primary">Edit</a></center></td>
                                     <td><center><a href="book.php?delete='.$row["book_id"].'" class="btn btn-danger">Delete</a></center></td>
                                     
@@ -216,6 +229,10 @@ $right = $mysqli->query($query);
            </div> 
 
       </section>
+  
+    </section>
+    </section>
+    <!--main content end-->
 
       
        

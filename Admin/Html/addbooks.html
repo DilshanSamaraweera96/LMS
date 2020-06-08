@@ -30,7 +30,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="../Dashboard.php" class="logo"><b>Sip<span>Sewana</span></b></a>
+      <a href="../Dashboard.html" class="logo"><b>Sip<span>Sewana</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -45,7 +45,7 @@
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="logout.php">Logout</a></li>
+          <li><a class="logout" href="../adminlog.html">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -56,6 +56,7 @@
     <!--sidebar start-->
     <aside>
       <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
           <p class="centered"><img src="../Images/logo.png" class="img-circle" width="80"></p>
@@ -110,9 +111,16 @@
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
@@ -125,6 +133,10 @@
     <!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        
         <div class="container">
 			<div class="main">
 				<div class="main-center">
@@ -167,6 +179,30 @@
                                     <option value="Other">Other</option>
                                     
                                    </select>
+								</div>
+            </div>
+            
+              <div class="form-group">
+							<label>ISBN Number</label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-list-ol"  aria-hidden="true"></i></span>
+									<input type="number" class="form-control" name="isbn"  placeholder="Enter ISBN Number" required/>
+								</div>
+            </div>
+            
+            <div class="form-group">
+							<label>Publisher</label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-upload"  aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="publisher" placeholder="Enter Book Publisher" required/>
+								</div>
+            </div>
+            
+            <div class="form-group">
+							<label>Book Pages</label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-file"  aria-hidden="true"></i></span>
+									<input type="number" class="form-control" name="pages" placeholder="Enter Book Pages" required/>
 								</div>
 						</div>
 
@@ -220,14 +256,16 @@
 						
 						
 
-				<button type="submit" name="uploadbtn">Submit</button>
+				<button type="submit" name="uploadbtn">SUBMIT</button>
                     
                     
 						
 					</form>
 				</div><!--main-center"-->
 			</div><!--main-->
-		</div><!--container-->
+    </div><!--container-->
+    </section>
+    </section>
 
       
        

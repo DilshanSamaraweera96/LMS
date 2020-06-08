@@ -147,13 +147,19 @@ $right = $mysqli->query($query);
               </a>
           </li>
           <li>
-            <a href="contact.php">
+          <a href="contact.php">
               <i class="fa fa-envelope"></i>
-              <span>Contact </span>
+              <span>Comments </span>
               <span class="label label-theme pull-right mail-info"></span>
               </a>
           </li>
-
+          <li>
+            <a href="chat.php">
+              <i class="fa fa-comments"></i>
+              <span>Chat </span>
+              <span class="label label-theme pull-right mail-info"></span>
+              </a>
+          </li>
         </ul>
         <!-- sidebar menu end-->
       </div>

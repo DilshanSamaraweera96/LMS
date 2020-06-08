@@ -489,6 +489,35 @@
     letter-spacing: 1px;
 }
 
+#Faq .guide h3
+{
+    padding-top: 20px;
+    color: #bf4040;
+}
+
+#Faq .guide h3::after
+{
+    content: '';
+    background: #4d1919;
+    display: block;
+    height: 3px;
+    width: 310px;
+    margin-bottom: 50px;
+}
+
+#Faq .guide h4{
+    color: #414B3B;
+    background-color: #ffcccc;
+}
+#Faq .guide p
+{
+    background-color: #ffe6e6;
+    font-size: 18px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    letter-spacing: 1px;
+}
+
 /***** Footer *****/
 
 .footer-top 
