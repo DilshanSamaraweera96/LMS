@@ -113,7 +113,7 @@ if(isset($_SESSION['LoggedInUserId']))
   
           if($num_msg==0)
           {
-              echo '<div class="col-md-8 col-sm-8 col-xs-12 right-sidebar">
+              echo '<div class="col-md-12 right-sidebar" data-aos="fade-up">
                   <div class="row">
                       <div class="col-md-12 right-header">
                           <div class="right-header-img">
@@ -158,7 +158,7 @@ if(isset($_SESSION['LoggedInUserId']))
           else
           {
   
-           echo '<div class="col-md-12 right-sidebar">
+           echo '<div class="col-md-12 right-sidebar" data-aos="fade-up">
                     <div class="row">
                       <div class="col-md-12 right-header">
                           <div class="right-header-img">

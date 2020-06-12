@@ -243,15 +243,36 @@ echo'<script>
         <div class="container">
             <div class="row">
 
-                <div class="d-flex flex-column justify-content-center ml-lg-auto mr-lg-5 col-lg-5 col-md-6 col-12">
-                    <h2 class="mb-3 text-white" data-aos="fade-up">New to the SipSewana?</h2>
+            <!-- change registration paragrpah when login -->
+            <?php 
+                                       
+            if(isset($_SESSION['LoggedInUserId']))
+            {
 
-                    <h6 class="mb-4 text-white" data-aos="fade-up">Click the button below and get your free membership now.</h6>
+             echo'   <div class="d-flex flex-column justify-content-center ml-lg-auto mr-lg-5 col-lg-5 col-md-6 col-12">
+                    <h2 class="mb-3 text-white" data-aos="fade-up" style="text-transform:capitalize;">Welcome '.$_SESSION["name"].'</h2>
 
-                    <p data-aos="fade-up" data-aos-delay="200">Libraria is free free education library system to help knowledge hungry readers. Join here & become one of a member of our society.</p>
+                    <h6 class="mb-4 text-white" data-aos="fade-up">You are one of members in our community.</h6>
 
-                    <a href="html/signup.html" class="btn custom-btn bg-color mt-3" data-aos="fade-up" data-aos-delay="300">Become a member today</a>
-                </div>
+                    <p data-aos="fade-up" data-aos-delay="200">Feel free to check our book store and reserve your desired book.
+                    You can contact us,give us feedback and you can make a request if you have more suggestions.</p>
+
+                   
+                </div>';
+            }
+            else
+            {
+             echo' <div class="d-flex flex-column justify-content-center ml-lg-auto mr-lg-5 col-lg-5 col-md-6 col-12">
+              <h2 class="mb-3 text-white" data-aos="fade-up">New to the SipSewana?</h2>
+
+              <h6 class="mb-4 text-white" data-aos="fade-up">Click the button below and get your free membership now.</h6>
+
+              <p data-aos="fade-up" data-aos-delay="200">Libraria is free free education library system to help knowledge hungry readers. Join here & become one of a member of our society.</p>
+
+              <a href="html/signup.html" class="btn custom-btn bg-color mt-3" data-aos="fade-up" data-aos-delay="300">Become a member today</a>
+             </div>';
+            }
+            ?>
 
                 <div class="mr-lg-auto mt-3 col-lg-4 col-md-6 col-12">
                      <div class="about-working-hours">
@@ -335,80 +356,44 @@ echo'<script>
 
                                 
                              </div>
+                                                 
+          <?php
+          //get recent books
+          
+          $get_recent = "SELECT * FROM addbook ORDER BY book_id DESC LIMIT 3";
+          $recent_book = mysqli_query($mysqli, $get_recent);
 
-                            <div class="col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="400">
-                                <div class="box">
-                                  <div class="figure">
-                                      <img src="images/recent/front1.jpg">
-                                      <div class="caption">
-                                         <div class="about">
-                                             <p><font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue> Title :</font><font color="#8cc867"> The Jewish Revolutionary Spirit</font><br>
-                                              
-                                               <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Author :</font> <font color="#8cc867">E.Michael Jones</font><br>
-                                                
-                                                 <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Category : </font><font color="#8cc867">Religious</font></p>
-                                             <div class="btfront bordered">
-                                             <a href="html/book.php#other"><font color="#fff" size="4"><b>Check Now</b></font></a>
-                                             </div>
-                                             
-                                         </div>
-                                          
-                                      </div>
-                                  </div>  
-                                </div>
-                            </div>
-                            
-                            
-                            
-                            
+          if($recent_book)
+          {
+            while($rbook = mysqli_fetch_assoc($recent_book))
+            {
 
-                            <div class="mt-5 mt-lg-0 mt-md-0 col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500">
-                                <div class="box">
-                                  <div class="figure">
-                                      <img src="images/recent/front2.jpg">
-                                      <div class="caption">
-                                         <div class="about">
-                                             <p><font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue> Title :</font><font color="#8cc867"> The Serpent's Secret</font><br>
-                                              
-                                               <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Author :</font> <font color="#8cc867">Sayantani Gasputa</font><br>
-                                                
-                                                 <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Category : </font><font color="#8cc867"> Novel</font></p>
-                                             <div class="btfront bordered">
-                                             <a href="html/book.php#novel"><font color="#fff" size="4"><b>Check Now</b></font></a>
-                                             </div>
-                                             
-                                         </div>
-                                          
-                                      </div>
-                                  </div>  
-                                </div>
-                            </div>
+              echo'<div class="mt-5 mt-lg-0 mt-md-0 col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500">
+              <div class="box">
+                <div class="figure">
+                    <img src="Admin/upload/'.$rbook["cover"].'">
+                    <div class="caption">
+                       <div class="about">
+                           <p><font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue> Title :</font><font color="#8cc867">'.$rbook["title"].'</font><br>
                             
-                            
-                            
-                            
+                             <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Author :</font> <font color="#8cc867">'.$rbook["author"].'</font><br>
+                              
+                               <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Category : </font><font color="#8cc867"> '.$rbook["category"].'</font></p>
+                           <div class="btfront bordered">
+                           <a href="html/book.php#novel"><font color="#fff" size="4"><b>Check Now</b></font></a>
+                           </div>
+                           
+                       </div>
+                        
+                    </div>
+                </div>  
+              </div>
+          </div>';
 
-                            <div class="mt-5 mt-lg-0 col-lg-4 col-md-6 col-12" data-aos="fade-up" data-aos-delay="600">
-                                <div class="box">
-                                  <div class="figure">
-                                      <img src="images/recent/front3.jpg">
-                                      <div class="caption">
-                                         <div class="about">
-                                             <p><font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue> Title :</font><font color="#8cc867">  Harry Poter & Philosopher's Stone</font><br>
-                                              
-                                               <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Author :</font> <font color="#8cc867">J.K.Rowling</font><br>
-                                                
-                                                 <font color="#FAFF3A "><i class="fa fa-certificate"></i></font>&nbsp;<font color=dodgerblue>  Category : </font><font color="#8cc867"> Novel</font></p>
-                                             <div class="btfront bordered">
-                                             <a href="html/book.php#novel"><font color="#fff" size="4"><b>Check Now</b></font></a>
-                                             </div>
-                                             
-                                         </div>
-                                          
-                                      </div>
-                                  </div>  
-                                </div>
-                            </div>
+            }
+
+          }
+          ?>
 
                     </div>
                     <br><br><br>

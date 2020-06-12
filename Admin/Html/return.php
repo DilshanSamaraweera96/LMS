@@ -21,7 +21,7 @@ if( isset($_GET['return'])){
 
         //Check avalibility of pending request
 
-        $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$bid'";
+        $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$bid' ORDER BY issueid ASC";
 
         $penr = mysqli_query($mysqli,$pen);
 
@@ -29,18 +29,29 @@ if( isset($_GET['return'])){
 
         $p = $penc['memberid'];
 
+        //get user email
+        $getemail = "SELECT * FROM user_register WHERE `mem-id`='$p'";
+
+        $mailresult = mysqli_query($mysqli,$getemail);
+
+        $email = mysqli_fetch_assoc($mailresult);
+
+        $mail = $email['email'];
+
+
 
        //check quantity is 0
 
         $upqty = $recheck['bookid'];
 
-        $chkqty = "SELECT quantity FROM addbook WHERE book_id='$upqty'";
+        $chkqty = "SELECT * FROM addbook WHERE book_id='$upqty'";
 
         $chkres = mysqli_query($mysqli, $chkqty);
 
         $chkchk = mysqli_fetch_assoc($chkres);
 
         $c= $chkchk['quantity'];
+        $name = $chkchk['title'];
 
 
         //issue dates to pending reservations
@@ -84,7 +95,18 @@ if( isset($_GET['return'])){
                             
                                         //notification entered.
 
-                if($reqtyr == true && $notquery==true)
+                //send gmail
+
+                $mailTo = "vhasaral@gmail.com";
+                $headers = "FROM : ".$mail;
+                $subject = "You have received an e-mail from SipSewana Library";
+                $txt = "Requested book of yours `".$name."`, now assigned to your reservation.Please collect it before due date.";
+            
+                $mailcheck = mail($mailTo, $subject, $txt, $headers);
+                
+                
+
+                if($reqtyr == true && $notquery==true && $mailcheck)
                 {
 
                 $_SESSION['msg'] = "Book AUTOMATICALLY Assigned to Pending Reservations!";

@@ -177,7 +177,8 @@
                                <td>Address</td> 
                                <td>Email</td>
                                <td>PhoneNumber</td>
-                               <td>Action</td> 
+                               <td>Edit</td> 
+                               <td>Delete</td>
                                </tr>  
                           </thead>  
                           <?php  
@@ -190,6 +191,7 @@
                                     <td>'.$row["address"].'</td>  
                                     <td>'.$row["email"].'</td>  
                                     <td>'.$row["phonenumber"].'</td>
+                                    <td><center><a href="signup.php?getid='.$row["mem-id"].'" class="btn btn-primary">Edit</a></center></td>
                                     <td><center><a href="memberdelete.php?delete='.$row["mem-id"].'" class="btn btn-danger">Delete</a></center></td>  
                                </tr>  
                                ';  

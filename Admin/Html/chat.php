@@ -312,6 +312,7 @@
 						<div class="col-md-12 right-chat-textbox">
 						   <form action="chatsend.php" method="post">
 						   <input type="hidden" name="sendto" value="'.$member.'">
+						   <input type="hidden" name="memid" value="'.$memid.'">
 						   <input type="text" name="message" placeholder="Write your message..." required/>
 						   <button class="submit" name="send"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 						   </form>

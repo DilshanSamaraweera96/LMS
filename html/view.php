@@ -126,11 +126,14 @@ if(!isset($_SESSION['LoggedInUserId']))
            <font color='#fff'><h1>".$row['title']."</h1></font> 
            <font color='#862d2d'><h3>".$row['author']."</h3></font>
            <br><font color=' #6b6b47'><h3>IN</h3></font><font color=' #ffff66'><h3>".$row['language']."</h3></font>";
+           
            //button
            if(empty($dil) && $getcm<3)
            {
            echo'<a href="reserve.php?book='.$row["book_id"].'&mem='.$mem.'">Reserve Book</a>';
            }
+           echo "     <p><font color='#ffff99'>Pages</font></p>
+           <font color='#80ff80'><h3>".$row['pages']."</h3></font>";
     
     echo "</div>";               
 	  echo "<div class='preview'></div>";

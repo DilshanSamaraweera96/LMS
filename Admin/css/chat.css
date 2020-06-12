@@ -933,7 +933,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
   margin-top:20px;  
 }
 .right-header-contentChat .rightside-left-chat p,.right-header-contentChat .rightside-right-chat p{
-  background-color: #40bf80;
+  background-color: #26734d;
   padding:15px;
   border-radius:8px;
   color:#fff;
@@ -968,7 +968,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
   transition: background 0.5s;
 }
 .rightside-left-chat span i,.rightside-right-chat span i{
-  color: #40bf80;
+  color: #26734d;
   font-size: 14px;
 }
 .rightside-right-chat span i{
@@ -987,7 +987,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
   left:15px;
   bottom:150px;
   border:15px solid transparent;
-  border-bottom-color:#40bf80; 
+  border-bottom-color:#26734d; 
   z-index: 1;
 }
 .rightside-right-chat:before{

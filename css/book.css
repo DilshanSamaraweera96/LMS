@@ -477,6 +477,7 @@
     background-color: #FF915A;
     border-radius: 30px;
     padding: 10px;
+    
     }
 
     .search_input{
@@ -485,6 +486,7 @@
     outline: 0;
     background: none;
     width: 0;
+    font-size: 20px;
     caret-color:transparent;
     line-height: 40px;
     transition: width 0.4s linear;
@@ -498,8 +500,9 @@
     }
 
     .searchbar:hover > .search_icon{
-    background: white;
+    background: #ffff80;
     color: #e74c3c;
+    cursor: pointer;
     }
 
     .search_icon{
@@ -511,8 +514,9 @@
     align-items: center;
     border-radius: 50%;
     color:white;
-    text-decoration:none;
     }
+
+    
 
 
 /* booklist*/
@@ -537,6 +541,7 @@ section .section-title {
 #nav-tab
 {
     background: #DC7633;
+    font-size: 17px;
 }
 
 
@@ -545,7 +550,7 @@ section .section-title {
     background-color: transparent;
     border-color: transparent transparent #f3f3f3;
     border-bottom: 4px solid !important;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
 }
 #booklist .nav-tabs .nav-link {

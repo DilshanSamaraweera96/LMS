@@ -15,7 +15,7 @@ if( isset($_GET['book']))
 
             //Check avalibility of pending request
 
-            $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$bookid'";
+            $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$bookid' ORDER BY issueid ASC";
 
             $penr = mysqli_query($mysqli,$pen);
     
@@ -105,7 +105,7 @@ if( isset($_GET['book']))
 
     if($delright && $quanres==true)
     {
-        $_SESSION['message'] = "You Book Reservation Cancelled!";
+        $_SESSION['message'] = "Your Book Reservation Cancelled!";
         $_SESSION['type'] = "alert-danger";
 
         header("location:account.php");

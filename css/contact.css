@@ -640,7 +640,7 @@
 }
 .right-header-contentChat::-webkit-scrollbar {
     width: 12px;
-    background: #40bf80;
+    background: #26734d;
 }
 .right-header-contentChat::-webkit-scrollbar-thumb {
     background-color: #435f7a;
@@ -650,7 +650,7 @@
   margin-top:20px;  
 }
 .right-header-contentChat .rightside-left-chat p,.right-header-contentChat .rightside-right-chat p{
-  background-color: #40bf80;
+  background-color: #26734d;
   padding:15px;
   border-radius:8px;
   color:#fff;
@@ -704,7 +704,7 @@
   left:15px;
   bottom:150px;
   border:15px solid transparent;
-  border-bottom-color:#40bf80; 
+  border-bottom-color:#26734d; 
   z-index: 1;
 }
 .rightside-right-chat:before{

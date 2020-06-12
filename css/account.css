@@ -506,7 +506,7 @@ section .section-title {
 /*-----table-----*/
 
 #accountd .table {
-    margin-top: 80px;
+    margin-top: 40px;
     background: #ffff99;
 }
 
@@ -560,6 +560,50 @@ section .section-title {
 .table-striped>tbody>tr:nth-child(even)>th {
    background-color: #d9f2e5;
  }
+
+ /*------NOTIFICATION---------------*/
+#dropdown1 {
+    
+  margin-top: -6px;
+    background-color: transparent;
+    border-color: #fff;
+    border-style: solid;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+#dropdown1 .badge{
+  
+position: absolute;
+font-size: 0.7em;
+top: -4px;
+color: red;
+right: 3px;
+}
+#noti
+{
+  background: transparent;
+  left: -70px;
+}
+#noti a
+{
+  color: #555;
+  background: #ffffb3;
+  font-size: 11px;
+  border-radius: 10px;
+  left: -40px;
+  position: relative;
+}
+#noti a:hover
+{
+  color: #fff;
+  background: #cc6666;
+  font-size: 11px;
+  border-radius: 10px;
+  transition: color 0.6s linear;
+  transition: background 0.6s linear; 
+}
 /***** Footer *****/
 
 .footer-top 

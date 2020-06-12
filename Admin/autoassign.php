@@ -36,7 +36,7 @@
 
               //Check avalibility of pending request
 
-              $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$cbook'";
+              $pen = "SELECT * FROM issuebook WHERE issuedate IS NULL AND bookid='$cbook' ORDER BY issueid ASC";
 
               $penr = mysqli_query($mysqli,$pen);
       

@@ -98,6 +98,13 @@
                     $retmem = $getreturnresult['memberid'];
                     $retbook = $getreturnresult['bookid'];
 
+                    //get book name for email
+
+                    $getbook = "SELECT * FROM addbook WHERE book_id ='$retbook'";
+                    $getbname = mysqli_query($mysqli,$getbook);
+                    $bname = mysqli_fetch_assoc($getbname);
+                    $bookname = $bname['title'];
+
 
                     //SET NOTIFICATION 
 
@@ -136,8 +143,17 @@
                             $retwarnotquery = mysqli_query($mysqli, $retwarnot);
                                 
                                             //notification entered.
+
+                                    //send gmail
+
+                                    $mailTo = "vhasaral@gmail.com";
+                                    $headers = "FROM : vhasaral@gmail.com";
+                                    $subject = "You have received an e-mail from SipSewana Library";
+                                    $txt = "Today is the last day to return `".$bookname."`, book.If you are unable to return it before tommorow, Penalty will be added to your member account. ";
+                                
+                                    $mailcheck = mail($mailTo, $subject, $txt, $headers);
                     
-                                    if($retwarnotquery==true)
+                                    if($retwarnotquery==true && $mailcheck==true)
                                     {
                     
                                     echo'<div class="alert alert-success" role="alert"><center><b>Final Returnday Alert Send To Relevent Users</center></b></div>';
@@ -322,6 +338,7 @@
                         
                          $colNotMem = $getColResult['memberid'];
                          $colNotBook = $getColResult['bookid'];
+
             
             
                             //SET NOTIFICATION 
@@ -360,8 +377,9 @@
                                 $colwarnot = "INSERT INTO notification(memberid, bookid, msg, date) VALUES ('$colNotMem','$colNotBook','$colNotmsg','$colDateSet')";
                     
                                 $colwarnotquery = mysqli_query($mysqli, $colwarnot);
+
                                     
-                                                //notification entered.
+                                    //notification entered.
                     
                                     if($colwarnotquery==true)
                                     {

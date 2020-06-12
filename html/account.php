@@ -81,6 +81,60 @@ if(!isset($_SESSION['LoggedInUserId']))
                     <li><a href="https://fb.com" class="fa fa-facebook"></a></li>
                     <li><a href="#" class="fa fa-twitter"></a></li>
                     <li><a href="#" class="fa fa-instagram"></a></li>
+
+                                        <!----------------hide notification if userlogout  -->
+                                        <?php
+                    if(isset($_SESSION['LoggedInUserId']))
+                     {
+
+                    //connect db
+                      $mysqli = new mysqli('localhost', 'root', '12345', 'sipsewana') or die(mysqli_error($mysqli));
+
+                       $userid =$_SESSION['LoggedInUserId'];
+                      
+
+                      //get notfication
+                      $notif = "SELECT * FROM notification WHERE memberid = '$userid' ORDER BY notid DESC";
+                      $notifquery = mysqli_query($mysqli, $notif);
+                      $nm_rows= mysqli_num_rows($notifquery);
+                      
+                    
+                     echo' <li>
+                        <a class="btn" href="#" role="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bell"></i><span class="badge">'; if($nm_rows>0){echo $nm_rows;} echo'</span></a>
+
+                        <div id="noti" class="dropdown-menu" aria-labelledby="dropdown1">';
+        
+                      if($nm_rows>0)
+                      {
+                        while($notifcheck = mysqli_fetch_array($notifquery))
+                        {
+                        
+                         $notdate = $notifcheck['date']; 
+                        
+                            // <!-------notification msg------------>
+                          echo ' <a class="dropdown-item" href="not.php?mem='.$userid.'&date='.$notdate.'">';
+                          if($notdate) {
+                            $notdate = date("F d, Y, g:i a", strtotime($notdate));
+                          } else {
+                              $notdate = '';
+                          }
+                          echo' <small>'; echo $notdate ; echo'</small><br>';
+                            echo' '.$notifcheck["msg"].' </a>';
+
+                           
+                        
+                        }
+                      }
+                      else
+                      {
+                        echo '<a class="dropdown-item" href="#">No Notification Found!</a>';
+                      }
+                    echo'
+                      </div>
+                     </li>';
+
+                    }?>
                 </ul>
             </div>
 
@@ -271,7 +325,8 @@ if(!isset($_SESSION['LoggedInUserId']))
                      b.title,
                      i.issuedate,
                      i.collectdate,
-                     i.returndate
+                     i.returndate,
+                     i.completedate
                      
                      FROM
                      issuebook i
@@ -279,11 +334,13 @@ if(!isset($_SESSION['LoggedInUserId']))
                      user_register u ON i.memberid = u.`mem-id`
                      INNER JOIN
                      addbook b ON i.bookid = b.book_id
-                     WHERE memberid = '$userid' AND returndate IS NOT NULL";
+                     WHERE memberid = '$userid' AND returndate IS NOT NULL AND completedate IS NULL";
 
                      $gresult = mysqli_query($mysqli,$getr);
 
+
                      $num_rows= mysqli_num_rows($gresult);
+                     
 
 
                     ?>
@@ -391,6 +448,7 @@ if(!isset($_SESSION['LoggedInUserId']))
                         
                     
                     <?php
+                    
 
                     if($prows > 0)
                     {
@@ -420,19 +478,26 @@ if(!isset($_SESSION['LoggedInUserId']))
                                     <td>'.$pcheck["collectdate"].'</td>
                                     <td><center><a href="cancel.php?pbook='.$pcheck["bookid"].'&pmem='.$pcheck["memberid"].'" class="btn btn-danger">Cancel</a></center></td>   
                                     </tr> ';
+                                    echo' <p><b><font color="#555" size="3px"><i class="fa fa-certificate"></i> &nbsp;How long do you have to wait to get "'.$pcheck["title"].'" book?</font></b>
+                                    <a href="checkdate.php?dbook='.$pcheck["bookid"].'&bname='.$pcheck["title"].'" class="btn btn-primary" style=" font-size:10px;";>CHECK NOW</a></p><br>';                              
                                 }  
                                  
                           echo '</table>'; 
+
+                        
                           }
                           else
                           {
       
                               echo'<h6><b><font color="#555"><i class="fa fa-certificate"></i> &nbsp;You Dont Have Any Pending Book Reservations To CHECK!</font></b></h6>';
       
-                          }               
+                          }
+                          
+                          
                           ?>  
                     </div>
                     </div>
+                    
                     </section>
 
 					</div>
